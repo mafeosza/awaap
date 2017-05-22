@@ -1,0 +1,48 @@
+body{
+	background-image: url("http://localhost/plataforma/imagenes/bloque.png");
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    height:100%;
+}
+h1, h2, h3{
+	color: #fff;
+}
+
+#bloquePrincipal {
+	margin:auto;
+	width:946px;
+	height:560px;
+}
+
+#bloqueTitulo {
+	margin:auto;
+	width:946px;
+	height:50px;
+	padding-top: 15%;
+
+}
+
+#bloqueSlider {
+	margin:auto;
+	width:946px;
+	height:401px;
+	padding-top: 10%;
+}
+
+#bloqueBotones {
+	margin:auto;
+	width:946px;
+	height:94px;
+	padding-top:0.5%;
+}
+
+#img[usemap], map area{
+    outline: none;
+}
+
+#acceder{
+	padding-top: 10%;
+	background-color: #333;
+}

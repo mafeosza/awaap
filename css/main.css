@@ -1,0 +1,64 @@
+/*Estilos para la aplicación*/
+{
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+.contenedor:{
+	max-width: 1000px;
+	width: 90%;
+	margin: auto;
+}
+
+.izquierda {
+	float: left;
+}
+
+.derecha {
+	float: right;
+}
+
+header {
+
+}
+.fotos .contenedor {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.thumb {
+	width: 22%;
+	margin-bottom: 30px;
+	outline: 5px solid rgba(255,255,255,1);
+	-webkit-box-shadow: 2px 2px 3px rgba(0,0,0,8);
+	box-shadow: 2px 2px 3px rgba(0,0,0,8);
+	-webkit-transition: all .3s ease;
+	-o-transition: all .3s ease;
+	transition: all .3s ease;
+
+
+}
+.thumb:hover {
+	outline: 5px solid rgba(255,255,255,1);
+}
+.thumb a {
+	display: block;
+}
+.thumb img {
+	vertical-align: top;
+	width: 100%;
+}
+/* single foto*/
+.foto {
+	width: 100%;
+
+}
