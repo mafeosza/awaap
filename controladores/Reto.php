@@ -11,7 +11,7 @@
 	//////////////////////////////////////////////////////////
 
 		$reto = new RetoModelo();
-		$test = new TestModelo();
+		$testModelo = new TestModelo();
 		$intento = new IntentoModelo();
 		$testIntento = new TestIntentoModelo();
 		$estudiante = new EstudianteModelo();
@@ -24,14 +24,28 @@
 	if (isset($_SESSION['documento'])) {
 
 		/**
+		*documento del estudiante
+		*/
+		$documentoEstudiante = $_SESSION['documento'];
+		$idEstudiante = $estudiante->idEstudiante($documentoEstudiante);
+		
+
+		/**
 		*$id id del reto
 		*Se verifica que se haya enviado un id valido por la url
 		* de lo contrario se establece la variable $id con el valor false
 		*/
-		$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+		$idReto = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+		/**
+		*se inicializa las variables superado, puntaje y número de test superados
+		*/
+		$superado = 0;
+		$puntaje = 0;
+		$testSuperados = 0;
 
 		//si $id tiene como valor false, se envia al usuario a index
-		if(!$id){
+		if(!$idReto){
 			header('Location: ../Index.php');
 		}
 
@@ -39,31 +53,36 @@
 		//						Variables						//
 		//////////////////////////////////////////////////////////	
 
-			$nombreReto = $reto->nombreReto($id);
-			$espacioAcademico = $reto->espacioAcademicoReto($id);	
+			$nombreReto = $reto->nombreReto($idReto);
+			$espacioAcademico = $reto->espacioAcademicoReto($idReto);	
 
-			$temaReto = $reto->temaReto($id);
+			$temaReto = $reto->temaReto($idReto);
 
-			$datosReto = $reto->informacionReto($id);
+			$datosReto = $reto->informacionReto($idReto);
 
-			$tests = $test->informacionTest($id);	
+			$tests = $testModelo->informacionTest($idReto);	
 
-			$respuesta = $reto->respuestaPython($id);
+			$respuesta = $reto->respuestaPython($idReto);
 			$codigo = "";
 
-			$valoresTest = $test->listarValores($id);
-			#print_r($valoresTest);
-			#$valor = $valoresTest[0]['valores'];
-			
-			#print_r($valoresTest[1]['valores']);
+			$valoresTest = $testModelo->listarValores($idReto);
 		
 			$contenidoLi = "";
 			$count =0;
 			$i = 1;
+
 		//se muestran los test visibles del reto
 		while ($test = $tests[$count] ) {
 			if($test['visible'] == 1 and $test['lenguaje']=="python"){
-				$contenidoLi.= '<div class="alert alert-danger"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
+				
+					$contenidoLi.= '<div><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
+				/*if (condition){
+					contenidoLi
+					$contenidoLi.= '<div class="alert alert-success"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
+
+				}else{
+					$contenidoLi.= '<div class="alert alert-danger"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
+				}*/
 				$i++;	
 			}
 			$count++;
@@ -86,7 +105,7 @@
 			*Método que compara las salidas del código del estudiante
 			*con las del código del profesor
 			*/
-			function compararCodigo($salidaEstudiante,$valor,$tempA)
+			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest)
 			{
 				$descriptorspec =array(
 					0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
@@ -103,10 +122,16 @@
 
 						if ($salidaEstudiante == stream_get_contents($pipes[1]))
 						{
-						
+							//se crea un nuevo testIntento SUPERADO
+							$superado = 1;
+							$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
+
 							#echo "<script> alert('Bien hecho!'); </script>";
 							echo "bien hecho! <br>";
 						}else {
+							//se crea un nuevo testIntento NO superado
+							$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
+							
 							print_r(stream_get_contents($pipes[1]));
 							#echo "<script> alert('verifique su codigo'); </script>";
 							echo "revisa tu codigo <br>";
@@ -120,15 +145,19 @@
 
 		if ($_SERVER['REQUEST_METHOD'] =='POST') 
 		{
+			//se crea un nuevo intento cuando el usuario presiona el boton
+			$intento->crearIntento($superado, $puntaje, $idReto, $idEstudiante);
+			//se obtiene el id del intento creado
+			$idIntento = $intento->idIntento($idReto, $idEstudiante);
+
+
+			//se recorre el arreglo de valores para validar el código del estudiante
 			for ($i=0; $i < count($valoresTest); $i++) 
 			{ 
 				$valor = $valoresTest[$i]['valores'];
 				
 				if ($tests[$i]['lenguaje']==="python") 
 				{	
-				
-					#print_r($tests);
-
 
 					$codigo = $_POST['codigo'];
 
@@ -148,13 +177,19 @@
 						$salida= stream_get_contents($pipes[1]);
 						$error = stream_get_contents($pipes[2]);
 
+						//id del test que se esta evaluando
+						$idTest = $tests[$i]['id'];
+
 						if (!is_null($salida)) 
 						{
-							compararCodigo($salida,$valor,$tempA);
+							compararCodigo($salida, $valor, $tempA, $idTest);
 							#print_r($salida);
-							
+					
 							print_r($error);
 						}#fin if
+
+						//se crea un nuevo testIntento NO superado
+						$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
 
 						fclose($pipes[1]);
 						fclose($pipes[2]);		

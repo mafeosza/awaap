@@ -142,9 +142,7 @@
 
 			$id = $datos[0];
 			return $id;	
-
 		}
-
 
 	  	/**
 	  	*Método que lista los valores de los tests dado el id del reto
@@ -159,6 +157,23 @@
 
 		    return $datos;	
 	  	}
-}
+	  	
+	  	/**
+	  	*Método que lista los intentos de un test por un estudiante 
+	  	*dado el id del test y del estudiante
+	  	*/
+	  	public function intetosTestReto($idTest, $idEstudiante){
+	  		$sql= "SELECT a.id, a.superado, a.fecha FROM `IntentoTest` a, `Intento` b, `Estudiante` c
+	  		WHERE
+	  		a.Intento_id = b.id 
+	  		AND a.Test_id = $idTest
+	  		AND c.id = $idEstudiante";
+	  		$consulta = $this->query($sql);	  		
 
+	  		$datos = array();
+			$datos = $consulta->fetchAll();
+
+			return $datos;
+	  	}
+	}
  ?>

@@ -39,9 +39,30 @@
 
 		}
 		/*
-		*Método que 
+		*Método que actualiza el estado, superado o no superado, de un intento dado su id 
 		UPDATE `Intento` SET `superado` = '1' WHERE `Intento`.`id` = 1 AND `Intento`.`Reto_id` = 1 AND `Intento`.`Estudiante_id` = 7;
 		*/
+		public function cambiarEstado($idIntento, $idReto, $idEstudiante, $superado){
+			$sql = "UPDATE `Intento` SET `superado` = '$superado' WHERE `Intento`.`id` = $idIntento AND `Intento`.`Reto_id` = $idReto AND `Intento`.`Estudiante_id` = $idEstudiante";
+			$consulta = $this->query($sql);
+
+		}
+		/**
+		*Método que el id del último intento creado en un reto por un estudiante
+		*dado el id del reto y el id del estudiante
+		*/
+		public function idIntento($idReto, $idEstudiante){
+			$sql= "SELECT max(id) FROM `Intento` WHERE `Reto_id`= '$idReto' AND `Estudiante_id` = '$idEstudiante' LIMIT 1";
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetch();
+
+			$idIntento = $datos[0];
+
+			return $idIntento;
+		}
+
 	
 	}
 ?>
