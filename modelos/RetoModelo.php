@@ -174,7 +174,27 @@
 	  		
 	  		return $respuesta;
 	  	}
-		
+
+	  	/**
+	  	*Método que retorna la cantidad de tests de un reto dado su id y el lenguaje 
+	  	*/
+	  	public function cantidadTest($id, $lenguaje)
+	  	{
+
+	  		$sql = "SELECT COUNT(a.id) FROM `Test` a, `Reto` b 
+			WHERE
+			b.id = a.Reto_id 
+			AND a.lenguaje = '$lenguaje'
+			AND b.id = $id";
+			#print_r($sql);
+	  		$consulta = $this->query($sql);
+
+	  		$datos=array();
+	  		$datos = $consulta->fetch();
+	  		$cantidad = $datos[0];
+
+	  		return $cantidad;
+		}
 		
 	}	
 
