@@ -43,9 +43,10 @@
 				<h2>Retos pendientes</h2>
 				<?php if(!empty($retosNoCompletados)): ?>
 					<p>Estos son los retos que no haz completado en su totalidad</p>
+				
 					<?php foreach($retosNoCompletados as $retoNoCompletado): ?>
 						<a href="../controladores/Reto.php?id=<?php echo $retoNoCompletado['id'];?>"><h4><?php echo $retoNoCompletado['titulo']; ?></h4></a>
-						<br>
+						
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<?php if(empty($retosNoCompletados)): ?>

@@ -125,12 +125,18 @@
 		*Método que retorna los retos que no ha finalizado el estudiante
 		*/
 		public function retosNoCompletados($documento){
-			$sql="SELECT a.titulo, a.id FROM `Reto` a, `Intento` b, `Estudiante` c 
-			WHERE 
-			c.id = b.Estudiante_id
-			AND a.id = b.Reto_id
-			AND c.documento = $documento
-			AND b.superado = 0";
+			$sql="SELECT DISTINCT(b.id),b.titulo FROM `Intento` a,`Reto` b,`Estudiante` c 
+			WHERE a.Estudiante_id = c.id 
+			AND a.Reto_id = b.id 
+			AND a.superado = 0 
+			AND c.documento = $documento 
+			AND b.id NOT IN ( 
+			    SELECT DISTINCT(e.id) FROM `Intento` d, `Reto` e, `Estudiante` f 
+			    WHERE d.Estudiante_id = f.id 
+			    AND d.Reto_id = e.id 
+			    AND d.superado = 1 
+			    AND f.documento = $documento);";
+      		
 			$consulta = $this->query($sql);
 
 			$datos = array();
