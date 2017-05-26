@@ -73,13 +73,15 @@
 		}
 
 		/**
-		  * Método que obtiene la informacion del test dado el id del reto
+		  * Método que obtiene la informacion del test dado el id del reto 
+		  , a.descripcion, a.valores, a.visible, a.lenguaje
 		*/
 		public function informacionTest($id){
 			$sql = "SELECT a.id, a.descripcion, a.valores, a.visible, a.lenguaje FROM `Test` a, `Reto` b 
 			WHERE
 			b.id = a.Reto_id 
 			AND b.id = $id";
+			#print_r($sql);
 			$consulta = $this->query($sql);
 
 			$datos = array();
@@ -149,7 +151,7 @@
 	  	*/
 	  	public function listarValores($id)
 	  	{
-	  		$sql ="SELECT `valores` FROM `Test` WHERE `Reto_id`= $id";
+	  		$sql ="SELECT `valores`, `lenguaje` FROM `Test` WHERE `Reto_id`= $id";
 	  		$consulta=$this->query($sql);
 
 	   		$datos=array();

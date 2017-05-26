@@ -64,15 +64,15 @@
 
 			$respuesta = $reto->respuestaPython($idReto);
 			$codigo = "";
-
-			$valoresTest = $testModelo->listarValores($idReto);
-		
+			
 			$contenidoLi = "";
-			$count =0;
 			$i = 1;
 
 		//se muestran los test visibles del reto
-		while ($test = $tests[$count] ) {
+
+		for ($j=0; $j < count($tests); $j++) 
+		{ 
+			$test = $tests[$j];
 			if($test['visible'] == 1 and $test['lenguaje']=="python"){
 				
 					$contenidoLi.= '<div><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
@@ -85,8 +85,8 @@
 				}*/
 				$i++;	
 			}
-			$count++;
 		}
+		
 		
 		//////////////////////////////////////////////////////////
 		//					Archivos Temporales					//
@@ -105,7 +105,7 @@
 			*Método que compara las salidas del código del estudiante
 			*con las del código del profesor
 			*/
-			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest)
+			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento)
 			{
 				$descriptorspec =array(
 					0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
@@ -124,13 +124,14 @@
 						{
 							//se crea un nuevo testIntento SUPERADO
 							$superado = 1;
-							$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
+							
+							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 
 							#echo "<script> alert('Bien hecho!'); </script>";
 							echo "bien hecho! <br>";
 						}else {
 							//se crea un nuevo testIntento NO superado
-							$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
+							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 							print_r(stream_get_contents($pipes[1]));
 							#echo "<script> alert('verifique su codigo'); </script>";
@@ -144,21 +145,27 @@
 			}#fin metodo compararCodigo
 
 		if ($_SERVER['REQUEST_METHOD'] =='POST') 
-		{
+		{	
+			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
+			$date = getdate();
+			$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
+
 			//se crea un nuevo intento cuando el usuario presiona el boton
-			$intento->crearIntento($superado, $puntaje, $idReto, $idEstudiante);
+			$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
 			//se obtiene el id del intento creado
 			$idIntento = $intento->idIntento($idReto, $idEstudiante);
 
 
+						
 			//se recorre el arreglo de valores para validar el código del estudiante
-			for ($i=0; $i < count($valoresTest); $i++) 
-			{ 
-				$valor = $valoresTest[$i]['valores'];
+			for ($i=0; $i < count($tests); $i++) 
+			{ 	
+				$test = $tests[$i];
 				
-				if ($tests[$i]['lenguaje']==="python") 
-				{	
-
+				#print_r($tests);
+				if($test['lenguaje']=="python"){	
+					
+					$valor = $test['valores'];
 					$codigo = $_POST['codigo'];
 
 					$descriptorspec =array(
@@ -170,6 +177,7 @@
 					$process = proc_open('python -c "'.$codigo.'"', $descriptorspec, $pipes);
 
 					if (is_resource($process)) 
+					
 					{	
 						fwrite($pipes[0], $valor);
 						fclose($pipes[0]);
@@ -182,15 +190,17 @@
 
 						if (!is_null($salida)) 
 						{
-							compararCodigo($salida, $valor, $tempA, $idTest);
+							compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento);
 							#print_r($salida);
 					
 							print_r($error);
-						}#fin if
-
-						//se crea un nuevo testIntento NO superado
-						$testIntento->crearTestIntento($superado, $fecha, $idIntento, $idTest);
-
+						}else
+						{
+							//se crea un nuevo testIntento NO superado
+							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+							
+							
+						}
 						fclose($pipes[1]);
 						fclose($pipes[2]);		
 						$return_value = proc_close($process);
