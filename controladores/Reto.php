@@ -42,6 +42,7 @@
 		$superado = 0;
 		$puntaje = 0;
 		$testSuperados = 0;
+		$isBoton=0;
 
 		//si $id tiene como valor false, se envia al usuario a index
 		if(!$idReto){
@@ -60,7 +61,10 @@
 
 			$datosReto = $reto->informacionReto($idReto);
 
-			$tests = $testModelo->informacionTest($idReto);	
+			$tests = $testModelo->informacionTest($idReto);
+
+			#lenguaje en que se intentara resolver el reto
+			$lenguajeIntento = "";	
 
 			$respuesta = $reto->respuestaPython($idReto);
 			$codigo = "";
@@ -68,15 +72,21 @@
 			$contenidoLi = "";
 			$i = 1;
 
-			$porcentaje = 0;	
+			$porcentaje = 0;
+			$rSuperado = 0;
+			$isSuperado	= "";
 		//se muestran los test visibles del reto
 
 		for ($j=0; $j < count($tests); $j++) 
 		{ 
+
 			$test = $tests[$j];
-			if($test['visible'] == 1 and $test['lenguaje']=="python"){
+
+			#seleccion lenguaje python
+			$lenguajeIntento = "python";
+			if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento){
 				
-					$contenidoLi.= '<div><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
+					$contenidoLi.= '<div id="div'.$test['id'].'" class="alert alert-info"  ><li id="test'.$test['id'].'" >Test '.$i.'. '.$test['descripcion'].'</li></div>';
 				/*if (condition){
 					contenidoLi
 					$contenidoLi.= '<div class="alert alert-success"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
@@ -106,7 +116,7 @@
 			*Método que compara las salidas del código del estudiante
 			*con las del código del profesor
 			*/
-			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados)
+			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
 			{
 				$descriptorspec =array(
 					0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
@@ -129,7 +139,7 @@
 							$rSuperado++;
 							
 							//se crea un intento test SUPERADO
-						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 
 							#echo "<script> alert('Bien hecho!'); </script>";
 							echo "bien hecho! <br>";
@@ -138,7 +148,7 @@
 							return $rSuperado;
 						}else {
 							//se crea un nuevo testIntento NO superado
-						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 							print_r(stream_get_contents($pipes[1]));
 							#echo "<script> alert('verifique su codigo'); </script>";
@@ -155,17 +165,17 @@
 
 		if ($_SERVER['REQUEST_METHOD'] =='POST') 
 		{	
-
+			$isBoton = 1;
 			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
 			$date = getdate();
 			$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
 
-			$cantidadTest = $reto->cantidadTest($idReto, "python");
+			$cantidadTest = $reto->cantidadTest($idReto, $lenguajeIntento);
 			 
 			//se crea un nuevo intento cuando el usuario presiona el boton
-		#$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
+		$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
 			//se obtiene el id del intento creado
-		#$idIntento = $intento->idIntento($idReto, $idEstudiante);
+		$idIntento = $intento->idIntento($idReto, $idEstudiante);
 		
 			//se recorre el arreglo de valores para validar el código del estudiante
 			for ($i=0; $i < count($tests); $i++) 
@@ -201,7 +211,7 @@
 						if (!is_null($salida)) 
 						{
 							
-							$testSuperados+= compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados);
+							$testSuperados+= compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);
 							
 							#print_r($salida);
 					
@@ -209,7 +219,7 @@
 						}else
 						{
 							//se crea un nuevo testIntento NO superado
-						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 						}
 						

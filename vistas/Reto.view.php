@@ -7,16 +7,6 @@
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<script type="text/javascript">
-  		/**$(document).ready( function() {
-
-		    $("#boton").click(function(){ 
-		    	
-		    	$("#texto").css("color", "red");
-		    	 
-		    });
-		  } );**/
-  	</script>
   	<style type="text/css">
   		.textBarra{
   			float: left;
@@ -71,12 +61,19 @@
 	</div>
 	
 	<div class="textBarra">
-		<h4>Tu progreso en este reto</h4>
+		<h4>Tu porcentaje de aprobaci&oacute;n en este reto: 
+		
+		<?php
+			#se muestra el porcentaje aprobado
+			echo $porcentaje.'%';
+		?>	
+	</h4>
 	</div>
 	
 	<!--Barra de progreso-->
 	<div class="progress">
 		<div id="progressbar" class="progress-bar" style="width:0%;"></div>
+
 	</div>
 
 	<!-- Se pinta en la barra el porcentaje calculado -->
@@ -86,15 +83,14 @@
 			#si el porcentaje aprobado es menor al 30%, la barra será de color rojo
 			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#D53F35"; document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
 		}elseif ($porcentaje < 50) {
-			#si el porcentaje aprobado es menor al 30%, la barra será de color amarillo
+			#si el porcentaje aprobado es menor al 50%, la barra será de color amarillo
 			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#F4DF0C";  document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
 		}else{
-			#si el porcentaje aprobado es menor al 30%, la barra será de color verde
+			#de lo contrario, la barra será de color verde
 			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#52C935"; document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
 		}
-		#se muestra el porcentaje aprobado
-		echo $porcentaje.'%';
 	?>
+	
 
 	<div class="container-fluid">
 		<h3>Descripci&oacute;n</h3>
@@ -122,34 +118,45 @@
 						
 						 <div class="form-group">
 						 	<div class="controls">
-						 		<input type="submit" class="boton" id="boton" value="Enviar"/> 
-								<!--<button id="boton" class="btn btn-success" onclick="LanzaEvento()">Enviar</button>-->
+						 		<input type="submit" class="btn btn-success" id="boton" value="Enviar"/> 
+								
 							</div>
 						</div>
 					</fieldset>
 				</form>
 			</div>
 			
-
+			<!-- Tests del reto -->
 			<div class="col-sm-4">
 				<div class="tests" align="left">
 					<h3 align="left">Tests</h3>
-					<!--<div class="alert alert-success">-->
-					<!--<div class="alert alert-danger">-->
+					
 						<?php echo $contenidoLi; ?>
-					<!--</div>-->
 				</div>
 			</div>
+
+			<!--Se modifica el color de los tests dependiendo de si fueron o no aprobados -->
+			<?php
+			if ($isBoton == 1) {
+				# code...
+			
+				for ($j=0; $j < count($tests); $j++) 
+				{ 
+					$test = $tests[$j];
+					$isSuperado = $testIntento->isSuperadoTest($test['id'], $idIntento);
+					
+					if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento and $isSuperado == 1){
+						echo '<script language="javascript"> document.getElementById("div'.$test['id'].'").className = "alert alert-success"; </script>';
+
+					}elseif($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento and $isSuperado == 0){
+						echo '<script language="javascript"> document.getElementById("div'.$test['id'].'").className = "alert alert-danger"; </script>';
+					}
+
+				}
+			}	
+			?>
+
 		</div>
 	</div>
 </body>
 </html>
-<!--<?php #include_once 'budget_calc.php'; ?>
-<script>
-$(function() {
-$( "#progressbar" ).progressbar({
-max: <?php #echo $max_budget_echo; ?>,
-value: <?php #echo $total; ?>
-});
-});
-</script>-->

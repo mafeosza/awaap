@@ -56,5 +56,22 @@
 
 			return $datos;
 	  	}
+
+	  	/**
+	  	*Método que retorna si un test ha sido superado o no y el id del intentoTest dado el id del test
+	  	*/
+	  	public function isSuperadoTest($idTest, $idIntento){
+	  		$sql = "SELECT a.superado FROM `IntentoTest`a 
+	  		WHERE a.`Test_id` = $idTest 
+	  		AND a.`Intento_id` = $idIntento";
+	  		$consulta = $this->query($sql);
+
+	  		$datos = array();
+	  		$datos = $consulta->fetch();
+
+	  		$superado = $datos[0];
+
+	  		return $superado;
+	  	}
 	}
 ?>
