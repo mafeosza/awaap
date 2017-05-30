@@ -42,6 +42,7 @@
 		$superado = 0;
 		$puntaje = 0;
 		$testSuperados = 0;
+		#se entra al boton
 		$isBoton=0;
 
 		//si $id tiene como valor false, se envia al usuario a index
