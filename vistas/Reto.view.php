@@ -7,6 +7,16 @@
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script type="text/javascript">
+  		/**$(document).ready( function() {
+
+		    $("#boton").click(function(){ 
+		    	
+		    	$("#texto").css("color", "red");
+		    	 
+		    });
+		  } );**/
+  	</script>
   	<style type="text/css">
   		.textBarra{
   			float: left;
@@ -17,6 +27,7 @@
   		}
   		.progress{
   			clear:both;
+  			
   		}
   		.textBarra{
   			margin-left: 1%;
@@ -53,7 +64,7 @@
 		</div>
 	</nav>
 	
-	<div class="container-fluid text-center">	
+	<div id="texto" class="container-fluid text-center">	
 		<h1>AWA<sup>2</sup>P</h1>	
 		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
 		<h1>Reto <?php echo $nombreReto; ?></h1>
@@ -63,12 +74,27 @@
 		<h4>Tu progreso en este reto</h4>
 	</div>
 	
-
+	<!--Barra de progreso-->
 	<div class="progress">
-	  <div class="progress-bar" role="progressbar" aria-valuenow="60"
-	       aria-valuemin="0" aria-valuemax="100" style="width: 0.5%;">
-	  </div>
+		<div id="progressbar" class="progress-bar" style="width:0%;"></div>
 	</div>
+
+	<!-- Se pinta en la barra el porcentaje calculado -->
+	<?php
+
+		if ($porcentaje < 30) {
+			#si el porcentaje aprobado es menor al 30%, la barra será de color rojo
+			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#D53F35"; document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
+		}elseif ($porcentaje < 50) {
+			#si el porcentaje aprobado es menor al 30%, la barra será de color amarillo
+			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#F4DF0C";  document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
+		}else{
+			#si el porcentaje aprobado es menor al 30%, la barra será de color verde
+			echo '<script language="javascript"> document.getElementById("progressbar").style.backgroundColor = "#52C935"; document.getElementById("progressbar").style.width="'.$porcentaje.'%"; </script>';
+		}
+		#se muestra el porcentaje aprobado
+		echo $porcentaje.'%';
+	?>
 
 	<div class="container-fluid">
 		<h3>Descripci&oacute;n</h3>
@@ -96,7 +122,8 @@
 						
 						 <div class="form-group">
 						 	<div class="controls">
-								<button class="btn btn-success">Enviar</button>
+						 		<input type="submit" class="boton" id="boton" value="Enviar"/> 
+								<!--<button id="boton" class="btn btn-success" onclick="LanzaEvento()">Enviar</button>-->
 							</div>
 						</div>
 					</fieldset>
@@ -117,7 +144,7 @@
 	</div>
 </body>
 </html>
-<!--<?php include_once 'budget_calc.php'; ?>
+<!--<?php #include_once 'budget_calc.php'; ?>
 <script>
 $(function() {
 $( "#progressbar" ).progressbar({

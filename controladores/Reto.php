@@ -48,6 +48,7 @@
 			header('Location: ../Index.php');
 		}
 
+
 		//////////////////////////////////////////////////////////
 		//						Variables						//
 		//////////////////////////////////////////////////////////	
@@ -67,6 +68,7 @@
 			$contenidoLi = "";
 			$i = 1;
 
+			$porcentaje = 0;	
 		//se muestran los test visibles del reto
 
 		for ($j=0; $j < count($tests); $j++) 
@@ -127,7 +129,7 @@
 							$rSuperado++;
 							
 							//se crea un intento test SUPERADO
-							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 
 							#echo "<script> alert('Bien hecho!'); </script>";
 							echo "bien hecho! <br>";
@@ -136,7 +138,7 @@
 							return $rSuperado;
 						}else {
 							//se crea un nuevo testIntento NO superado
-							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 							print_r(stream_get_contents($pipes[1]));
 							#echo "<script> alert('verifique su codigo'); </script>";
@@ -153,6 +155,7 @@
 
 		if ($_SERVER['REQUEST_METHOD'] =='POST') 
 		{	
+
 			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
 			$date = getdate();
 			$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
@@ -160,9 +163,9 @@
 			$cantidadTest = $reto->cantidadTest($idReto, "python");
 			 
 			//se crea un nuevo intento cuando el usuario presiona el boton
-			$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
+		#$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
 			//se obtiene el id del intento creado
-			$idIntento = $intento->idIntento($idReto, $idEstudiante);
+		#$idIntento = $intento->idIntento($idReto, $idEstudiante);
 		
 			//se recorre el arreglo de valores para validar el código del estudiante
 			for ($i=0; $i < count($tests); $i++) 
@@ -206,7 +209,7 @@
 						}else
 						{
 							//se crea un nuevo testIntento NO superado
-							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+						#$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 						}
 						
@@ -223,8 +226,21 @@
 			 	echo "<script> alert(':D completado!!'); </script>";
 			 	$superado = 1;
 			 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
+			 	$porcentaje = 100;
+			 	
 			 } else{
-			 	echo "<script> alert('sigue intentando ;)'); </script>";
+			 	#echo "<script> alert('sigue intentando ;)'); </script>";
+			 	echo "sigue intentando";
+			 	if ($cantidadTest != 0) {
+			 		
+			 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
+
+
+			 		
+			 	}else{
+			 		$porcentaje = 0;
+			 	}
+
 			 }
 			 
 		}#fin if REQUEST_METHOD	
