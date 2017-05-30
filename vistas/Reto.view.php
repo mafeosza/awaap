@@ -137,7 +137,7 @@
 
 			<!--Se modifica el color de los tests dependiendo de si fueron o no aprobados -->
 			<?php
-			#si se entro al boton
+			#si se entro al boton 
 			if ($isBoton == 1) {
 			
 				for ($j=0; $j < count($tests); $j++) 
@@ -145,9 +145,10 @@
 					$test = $tests[$j];
 					$isSuperado = $testIntento->isSuperadoTest($test['id'], $idIntento);
 					
+					#si se supero el test, el div se pintara de color verde
 					if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento and $isSuperado == 1){
 						echo '<script language="javascript"> document.getElementById("div'.$test['id'].'").className = "alert alert-success"; </script>';
-
+						#si no se supero el test el div se pintara de color rojo
 					}elseif($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento and $isSuperado == 0){
 						echo '<script language="javascript"> document.getElementById("div'.$test['id'].'").className = "alert alert-danger"; </script>';
 					}

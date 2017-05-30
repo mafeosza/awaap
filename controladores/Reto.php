@@ -243,7 +243,7 @@
 			 	#echo "<script> alert('sigue intentando ;)'); </script>";
 			 	echo "sigue intentando";
 			 	if ($cantidadTest != 0) {
-			 		
+			 		#se calcula el porcentaje aprobado 
 			 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
 
 
