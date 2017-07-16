@@ -189,7 +189,7 @@
 			#print_r($sql);
 	  		$consulta = $this->query($sql);
 
-	  		$datos=array();
+	  		$datos = array();
 	  		$datos = $consulta->fetch();
 	  		$cantidad = $datos[0];
 

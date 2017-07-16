@@ -62,6 +62,8 @@
 
 			$datosReto = $reto->informacionReto($idReto);
 
+			$nivelDificultad = $datosReto[0]['nivelDificultad'];
+
 			$tests = $testModelo->informacionTest($idReto);
 
 			#lenguaje en que se intentara resolver el reto
@@ -234,11 +236,16 @@
 			}#fin for
 
 			if ($cantidadTest == $testSuperados) {
-			 	echo "<script> alert(':D completado!!'); </script>";
 			 	$superado = 1;
 			 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
 			 	$porcentaje = 100;
+
+			 	#se calcula el puntaje
+			 	$puntaje = $nivelDificultad * $porcentaje;
+			 	#se cambia el puntaje del intento
+			 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
 			 	
+			 	echo "<script> alert(':D completado!!'); </script>";
 			 } else{
 			 	#echo "<script> alert('sigue intentando ;)'); </script>";
 			 	echo "sigue intentando";
@@ -246,7 +253,11 @@
 			 		#se calcula el porcentaje aprobado 
 			 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
 
-
+			 		#se calcula el puntaje
+				 	$puntaje = $nivelDificultad * $porcentaje;
+				 	print_r($puntaje);
+				 	#se cambia el puntaje del intento
+				 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
 			 		
 			 	}else{
 			 		$porcentaje = 0;

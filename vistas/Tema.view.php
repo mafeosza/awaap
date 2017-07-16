@@ -9,11 +9,20 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<style type="text/css">
-  		img{
+  		.imgReto{
   			height: 200px;
-  			height: 200px;
+  			width: 200px;
   		}
-
+  		.logo{
+  			height: 70px;
+  			width: 20px;
+  			border: 2px solid #000;
+    		border-radius: 8px;
+  		}
+  		h4{
+  			font-size: 15px;
+  			text-align: center;
+  		}
   	</style>
 </head>
 <body>
@@ -51,14 +60,48 @@
 	</div>
 	<section class="fotos">
 		<div class="contenedor">
-			<?php foreach ($retos as $reto): ?>
-				<div class="thumb">
-					<a href="../controladores/Reto.php?id=<?php echo $reto['id'];?>"> <h3 align="center"><b><?php echo $reto['titulo']; ?></b></h3></a>
-					<a href="../controladores/Reto.php?id=<?php echo $reto['id'];?>">
-						<img src="<?php echo $reto['imagen']; ?>" alt="<?php echo $reto['id'];?>">
-					</a>
-				</div>
-			<?php endforeach;?>
+			<?php 
+				if (!empty($retos))
+				{
+				
+			?>
+					<?php foreach ($retos as $reto): ?>
+						<div class="thumb">
+							<!--a href="../controladores/Reto.php?id=<?php #echo $reto['id'];?>"--> <h3 align="center"><b><?php echo $reto['titulo']; ?></b></h3><!--/a-->
+							<!--a href="../controladores/Reto.php?id=<?php #echo $reto['id'];?>"-->
+								<img class="imgReto" src="<?php echo $reto['imagen']; ?>" alt="<?php echo $reto['id'];?>">
+							<!--/a-->
+								<h4>Escoje un lenguaje de programaci&oacute;n</h4>
+								<h4>para resolver este reto</h4>
+							<div class="col-md-12" align="center">
+								<?php if (!empty($reto['solucionJava'])) { ?>
+									<div class="col-md-6">
+										<a href="../controladores/Reto.php?id=<?php echo $reto['id'];?>&l=java">
+											<img src="../imagenes/javalogo.png" class="logo">
+										</a>
+									</div>
+								<?php } ?>
+								<?php if (!empty($reto['solucionPython'])) { ?>
+									<div class="col-md-6">
+										<a href="../controladores/Reto.php?id=<?php echo $reto['id'];?>&l=python">
+											<img src="../imagenes/pythonlogo.png" class="logo">
+										</a>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+
+					<?php endforeach;?>
+			<?php
+				}else{
+			?>
+					<div class="container-fluid text-center">
+					<h3>No Hay Retos Disponibles</h3>
+					</div>
+			<?php
+				}
+			?>
+
 		</div>	
 	</section>
 

@@ -107,12 +107,31 @@
 		*Método que retorna el nombre de los espacios academicos de un estudiante
 		*/
 		public function espaciosAcademicosEstudiante($documento){
-			$sql = "SELECT a.nombre, a.id FROM `EspacioAcademico` a, `Estudiante` b, `Grupo` c, `Registro` d 
+			$sql = "SELECT a.nombre, a.id, c.id as 'idGrupo' FROM `EspacioAcademico` a, `Estudiante` b, `Grupo` c, `Registro` d 
 			WHERE 
 			b.id = d.Estudiante_id
 			AND c.id = d.Grupo_id
 			AND a.id = c.EspacioAcademico_id
 			AND b.documento = $documento";
+			$consulta = $this->query($sql);
+			
+			$datos = array();
+			$datos = $consulta->fetchAll();
+
+			return $datos;
+		}
+
+		/**
+		*Método que retorna el grupo de un espacio academico al que pertenece un estudiante
+		*/
+		public function grupoEspacioAcademico($documento, $idEspacio){
+			$sql = "SELECT c.id as 'idGrupo' FROM `EspacioAcademico` a, `Estudiante` b, `Grupo` c, `Registro` d 
+			WHERE 
+			b.id = d.Estudiante_id
+			AND c.id = d.Grupo_id
+			AND a.id = c.EspacioAcademico_id
+			AND b.documento = $documento
+			AND a.id = $idEspacio";
 			$consulta = $this->query($sql);
 			
 			$datos = array();
@@ -145,6 +164,32 @@
 			return $datos;
 		}
 
-		
+		/**
+		*Método que lista la información de los retos intentados por el estudiante
+		*para la vista miPrograso
+		*/
+		public function retosEstudiante($documento){
+			$sql = "SELECT a.titulo, c.nombre, COUNT(DISTINCT e.id) as 'conteo', f.lenguaje, MAX(e.fecha) as 'fecha',
+			MAX(e.puntaje) as 'puntaje', MAX(e.superado) as 'superado'
+			FROM `Reto` a, `Grupo` b, `EspacioAcademico` c, `Registro` d, `Intento` e, `Test` f, `Estudiante` g
+			WHERE 
+			a.Grupo_id = b.id 
+			AND b.EspacioAcademico_id = c.id 
+			AND d.Grupo_id = b.id 
+			AND d.Estudiante_id = g.id 
+			AND e.Reto_id = a.id 
+			AND e.Estudiante_id = g.id 
+			AND f.Reto_id = a.id 
+			AND g.documento = '$documento'
+			GROUP BY a.id";
+			
+			$consulta = $this->query($sql);
+			
+			$datos = array();
+			$datos = $consulta->fetchAll();
+
+			return $datos;
+
+		}
 	}
 ?>

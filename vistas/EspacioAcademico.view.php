@@ -53,10 +53,11 @@
 			<h4>No hay material de estudio disponible</h4>
 		<?php endif; ?>
 		</div>
+		
 		<div class="col-sm-9">
 			
 			<hr>
-			<div class="container">
+			<div class="container-fluid">
 			
 				<h3>TEMARIO</h3>
 				<div class="row">

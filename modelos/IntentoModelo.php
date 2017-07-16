@@ -65,6 +65,14 @@
 
 			return $idIntento;
 		}
+		/**
+		*Método que cambia el puntaje de un intento
+		*/
+		public function cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante){
+			$sql = "UPDATE `Intento` SET `puntaje` = '$puntaje' WHERE `Intento`.`id` = '$idIntento' AND `Intento`.`Reto_id` = '$idReto' AND `Intento`.`Estudiante_id` = $idEstudiante";
+			$consulta = $this->query($sql);
+
+		}
 
 
 	}

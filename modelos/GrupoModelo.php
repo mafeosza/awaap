@@ -44,6 +44,23 @@
 		}
 
 		/**
+		*Método que retorna los retos de un grupo dado el id del grupo y del tema
+		*/
+		public function retosGrupoTema($idGrupo, $idTema){
+			$sql = "SELECT a.id, a.titulo, a.descripcionCorta, a.imagen, a.solucionPython, a.solucionJava FROM `Reto` a 
+			WHERE 
+			a.Grupo_id = $idGrupo 
+			AND a.Tema_id = $idTema";
+
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetchAll();
+
+			return $datos;
+		}
+
+		/**
 		*Método que retorna los temas del espacio academico al que pertenece el grupo dado su id
 		*/
 		public function temasGrupo($id){

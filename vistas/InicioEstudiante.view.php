@@ -64,8 +64,8 @@
 			</div>
 			<div class="col-sm-3">
 				<h2 align="left">Puntajes</h2>
-				<a href="../controladores/progreso.php"><h4><li>Tu progreso</li></h4></a>
-				<a href="../controladores/raquin.php"><h4><li>Mejores puntajes</li></h4></a>
+				<a href="../controladores/Progreso.php"><h4><li>Tu progreso</li></h4></a>
+				<a href="../controladores/Raquin.php"><h4><li>Mejores puntajes</li></h4></a>
 			</div>
 			<!--<div class="col-sm-2">
 					<h4 align="left">Registrate en un espacio acad&eacute;mico</h4>

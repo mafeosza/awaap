@@ -5,8 +5,9 @@
 	if (isset($_SESSION['documento'])) {
 
 		$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+		#$idg = isset($_GET['idg']) ? (int)$_GET['idg'] : false;
 
-		if(!$id){
+		if(!$id and !$idg){
 			header('Location: ../Index.php');
 		}
 		
