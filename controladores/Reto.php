@@ -90,13 +90,6 @@
 			if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento){
 				
 					$contenidoLi.= '<div id="div'.$test['id'].'" class="alert alert-info"  ><li id="test'.$test['id'].'" >Test '.$i.'. '.$test['descripcion'].'</li></div>';
-				/*if (condition){
-					contenidoLi
-					$contenidoLi.= '<div class="alert alert-success"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
-
-				}else{
-					$contenidoLi.= '<div class="alert alert-danger"><li>Test '.$i.'. '.$test['descripcion'].'</li></div>';
-				}*/
 				$i++;	
 			}
 		}
@@ -144,9 +137,6 @@
 							//se crea un intento test SUPERADO
 						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 
-							#echo "<script> alert('Bien hecho!'); </script>";
-							echo "bien hecho! <br>";
-
 							//se retornan la cantidad de retos superados
 							return $rSuperado;
 						}else {
@@ -154,8 +144,7 @@
 						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							
 							print_r(stream_get_contents($pipes[1]));
-							#echo "<script> alert('verifique su codigo'); </script>";
-							echo "revisa tu codigo <br>";
+							
 						}
 							
 						fclose($pipes[1]);
@@ -214,9 +203,7 @@
 						if (!is_null($salida)) 
 						{
 							
-							$testSuperados+= compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);
-							
-							#print_r($salida);
+							$testSuperados+= compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
 					
 							print_r($error);
 						}else
@@ -245,17 +232,15 @@
 			 	#se cambia el puntaje del intento
 			 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
 			 	
-			 	echo "<script> alert(':D completado!!'); </script>";
 			 } else{
-			 	#echo "<script> alert('sigue intentando ;)'); </script>";
-			 	echo "sigue intentando";
+
 			 	if ($cantidadTest != 0) {
 			 		#se calcula el porcentaje aprobado 
 			 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
 
 			 		#se calcula el puntaje
 				 	$puntaje = $nivelDificultad * $porcentaje;
-				 	print_r($puntaje);
+				 	
 				 	#se cambia el puntaje del intento
 				 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
 			 		
