@@ -138,7 +138,7 @@
 			<!--Se modifica el color de los tests dependiendo de si fueron o no aprobados -->
 			<?php
 			#si se entro al boton 
-			if ($isBoton == 1) {
+			if ($presionaBoton == 1) {
 			
 				for ($j=0; $j < count($tests); $j++) 
 				{ 

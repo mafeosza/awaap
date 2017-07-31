@@ -37,13 +37,20 @@
 		$idReto = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
 		/**
+		*$lenguaje en que se solucionara el reto
+		*Se verifica que se haya enviado un lenguaje valido por la url
+		* de lo contrario se establece la variable $lenguaje con el valor false
+		*/
+		$lenguaje = isset($_GET['l']) ? $_GET['l'] : false;
+
+		/**
 		*se inicializa las variables superado, puntaje y número de test superados
 		*/
 		$superado = 0;
 		$puntaje = 0;
 		$testSuperados = 0;
-		#se entra al boton
-		$isBoton=0;
+		#se presiona boton enviar
+		$presionaBoton=0;
 
 		//si $id tiene como valor false, se envia al usuario a index
 		if(!$idReto){
@@ -85,8 +92,8 @@
 
 			$test = $tests[$j];
 
-			#seleccion lenguaje python
-			$lenguajeIntento = "python";
+			#mostrar los test dependiendo del lenguaje seleccionado
+			$lenguajeIntento = $lenguaje; //se debe defnir segun la seleccion
 			if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento){
 				
 					$contenidoLi.= '<div id="div'.$test['id'].'" class="alert alert-info"  ><li id="test'.$test['id'].'" >Test '.$i.'. '.$test['descripcion'].'</li></div>';
@@ -108,11 +115,17 @@
 			fseek($temp, 0);
 			$tempA= fread($temp, 1024);	
 
+		//////////////////////////////////////////////////////////
+		//				  	     Métodos			  	 	    //
+		//////////////////////////////////////////////////////////
+
+			//crear otro comparar para java
+
 			/**
 			*Método que compara las salidas del código del estudiante
 			*con las del código del profesor
 			*/
-			function compararCodigo($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
+			function compararCodigoPython($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
 			{
 				$descriptorspec =array(
 					0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
@@ -152,12 +165,13 @@
 						$return_value = proc_close($process);
 					}
 
-			}#fin metodo compararCodigo
+			}#fin metodo compararCodigoPython
 
-
+	#si la solución se presenta en python
+	if($lenguaje=="python"){
 		if ($_SERVER['REQUEST_METHOD'] =='POST') 
 		{	
-			$isBoton = 1;
+			$presionaBoton = 1;
 			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
 			$date = getdate();
 			$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
@@ -165,9 +179,9 @@
 			$cantidadTest = $reto->cantidadTest($idReto, $lenguajeIntento);
 			 
 			//se crea un nuevo intento cuando el usuario presiona el boton
-		$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
+			$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
 			//se obtiene el id del intento creado
-		$idIntento = $intento->idIntento($idReto, $idEstudiante);
+			$idIntento = $intento->idIntento($idReto, $idEstudiante);
 		
 			//se recorre el arreglo de valores para validar el código del estudiante
 			for ($i=0; $i < count($tests); $i++) 
@@ -203,7 +217,7 @@
 						if (!is_null($salida)) 
 						{
 							
-							$testSuperados+= compararCodigo($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
+							$testSuperados+= compararCodigoPython($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
 					
 							print_r($error);
 						}else
@@ -251,7 +265,81 @@
 			 }
 			 
 		}#fin if REQUEST_METHOD	
-					
+	}#fin if lenguaje	
+
+	#si la solución se presenta en java
+	if ($lenguaje=="java") {
+		#$texto = "hola";
+		$texto= $_POST["texto"];
+		$error="";
+		//echo $texto;
+		if(!empty($texto)){	
+			//t carpeta donde se guardaran los archivos java, suma2.java archivo con el codigo java a ejecutar
+			$process_cmd = "cd t;/usr/bin/javac suma2.java";
+			$env = NULL;
+			$options = ["bypass_shell" => true];
+			$cwd = NULL;
+
+
+			$descriptorspec =array( 
+				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+				);
+
+			$process2 = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+			if (is_resource($process2)) 
+			{
+				fwrite($pipes[0], $texto);
+				fclose($pipes[0]);
+
+				$salida= stream_get_contents($pipes[1]);
+				$error = stream_get_contents($pipes[2]);
+
+				print_r($salida);	
+				print_r($error);
+
+				fclose($pipes[1]);
+				fclose($pipes[2]);		
+				$return_value = proc_close($process2);
+
+			}
+			
+			$process_cmd = "cd t;/usr/bin/java suma2";
+			$env = NULL;
+			$options = ["bypass_shell" => true];
+			$cwd = NULL;
+			$descriptorspec =array( 
+				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+				);
+				$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+
+			if (is_resource($process)) 
+			{
+				fwrite($pipes[0], $texto);
+				fclose($pipes[0]);
+
+				$salida= stream_get_contents($pipes[1]);
+				$error = stream_get_contents($pipes[2]);
+
+				print_r($salida);
+						
+				print_r($error);
+
+				fclose($pipes[1]);
+				fclose($pipes[2]);		
+				$return_value = proc_close($process);
+
+				#echo "Comando retorno $return_value/n";
+			}
+
+			exec("cd t;rm suma2.class");
+		}
+	}			
 		/**
 		*Eliminar archivo temporal código profesor
 		**/
