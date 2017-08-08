@@ -167,10 +167,9 @@
 
 			}#fin metodo compararCodigoPython
 
-	#si la solución se presenta en python
+	#si el usuario presentara el reto en python
 	if($lenguaje=="python"){
-		if ($_SERVER['REQUEST_METHOD'] =='POST') 
-		{	
+		if ($_SERVER['REQUEST_METHOD'] =='POST'){	
 			$presionaBoton = 1;
 			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
 			$date = getdate();
@@ -265,17 +264,18 @@
 			 }
 			 
 		}#fin if REQUEST_METHOD	
-	}#fin if lenguaje	
+	}#fin if lenguaje python	
 
 	#si la solución se presenta en java
 	if ($lenguaje=="java") {
-		#$texto = "hola";
-		$texto= $_POST["texto"];
-		$error="";
-		//echo $texto;
-		if(!empty($texto)){	
+		if ($_SERVER['REQUEST_METHOD'] =='POST'){
+			$codigo = $_POST['codigo'];
+			#$texto = "hola";
+			$error="";
+			echo $codigo;
+			
 			//t carpeta donde se guardaran los archivos java, suma2.java archivo con el codigo java a ejecutar
-			$process_cmd = "cd t;/usr/bin/javac suma2.java";
+			/*$process_cmd = "cd archivosJava;/usr/bin/javac suma2.java";
 			$env = NULL;
 			$options = ["bypass_shell" => true];
 			$cwd = NULL;
@@ -337,9 +337,9 @@
 				#echo "Comando retorno $return_value/n";
 			}
 
-			exec("cd t;rm suma2.class");
-		}
-	}			
+			exec("cd t;rm suma2.class");*/
+		}#fin if REQUEST_METHOD
+	}#fin if lenguaje java
 		/**
 		*Eliminar archivo temporal código profesor
 		**/
