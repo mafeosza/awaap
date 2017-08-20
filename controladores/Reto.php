@@ -107,7 +107,8 @@
 		//////////////////////////////////////////////////////////
 
 			/**
-			*Archivo temporal para el código del profesor
+			*Archivo temporal para ejecutar 
+			*el código python del profesor
 			**/
 
 			$temp = tmpfile();
@@ -167,185 +168,206 @@
 
 			}#fin metodo compararCodigoPython
 
-	#si el usuario presentara el reto en python
-	if($lenguaje=="python"){
-		if ($_SERVER['REQUEST_METHOD'] =='POST'){	
-			$presionaBoton = 1;
-			//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
-			$date = getdate();
-			$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
+		#si el usuario presentara el reto en python
+		if($lenguaje=="python"){
+			if ($_SERVER['REQUEST_METHOD'] =='POST'){	
+				$presionaBoton = 1;
+				//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
+				$date = getdate();
+				$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
 
-			$cantidadTest = $reto->cantidadTest($idReto, $lenguajeIntento);
-			 
-			//se crea un nuevo intento cuando el usuario presiona el boton
-			$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
-			//se obtiene el id del intento creado
-			$idIntento = $intento->idIntento($idReto, $idEstudiante);
-		
-			//se recorre el arreglo de valores para validar el código del estudiante
-			for ($i=0; $i < count($tests); $i++) 
-			{ 	
-				$test = $tests[$i];
-				
-				#print_r($tests);
-				if($test['lenguaje']=="python"){	
+				$cantidadTest = $reto->cantidadTest($idReto, $lenguajeIntento);
+				 
+				//se crea un nuevo intento cuando el usuario presiona el boton
+				$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
+				//se obtiene el id del intento creado
+				$idIntento = $intento->idIntento($idReto, $idEstudiante);
+			
+				//se recorre el arreglo de valores para validar el código del estudiante
+				for ($i=0; $i < count($tests); $i++) 
+				{ 	
+					$test = $tests[$i];
 					
-					$valor = $test['valores'];
-					$codigo = $_POST['codigo'];
-
-					$descriptorspec =array(
-						0 => array("pipe", "r"),  //gestor de lectura conectado al stdin hijo
-						1 => array("pipe", "w"),  //gestor de escritura conectado al stdout hijo
-						2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
-					);
-
-					$process = proc_open('python -c "'.$codigo.'"', $descriptorspec, $pipes);
-
-					if (is_resource($process)) 
-					
-					{	
-						fwrite($pipes[0], $valor);
-						fclose($pipes[0]);
-
-						$salida= stream_get_contents($pipes[1]);
-						$error = stream_get_contents($pipes[2]);
-
-						//id del test que se esta evaluando
-						$idTest = $tests[$i]['id'];
-
-						if (!is_null($salida)) 
-						{
-							
-							$testSuperados+= compararCodigoPython($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
-					
-							print_r($error);
-						}else
-						{
-							//se crea un nuevo testIntento NO superado
-						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
-							
-						}
+					#print_r($tests);
+					if($test['lenguaje']=="python"){	
 						
-						fclose($pipes[1]);
-						fclose($pipes[2]);		
-						$return_value = proc_close($process);
+						$valor = $test['valores'];
+						$codigo = $_POST['codigo'];
 
-					} #fin if
+						$descriptorspec =array(
+							0 => array("pipe", "r"),  //gestor de lectura conectado al stdin hijo
+							1 => array("pipe", "w"),  //gestor de escritura conectado al stdout hijo
+							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+						);
 
-				}#fin if
-			}#fin for
+						$process = proc_open('python -c "'.$codigo.'"', $descriptorspec, $pipes);
 
-			if ($cantidadTest == $testSuperados) {
-			 	$superado = 1;
-			 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
-			 	$porcentaje = 100;
+						if (is_resource($process)) 
+						
+						{	
+							fwrite($pipes[0], $valor);
+							fclose($pipes[0]);
 
-			 	#se calcula el puntaje
-			 	$puntaje = $nivelDificultad * $porcentaje;
-			 	#se cambia el puntaje del intento
-			 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
-			 	
-			 } else{
+							$salida= stream_get_contents($pipes[1]);
+							$error = stream_get_contents($pipes[2]);
 
-			 	if ($cantidadTest != 0) {
-			 		#se calcula el porcentaje aprobado 
-			 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
+							//id del test que se esta evaluando
+							$idTest = $tests[$i]['id'];
 
-			 		#se calcula el puntaje
+							if (!is_null($salida)) 
+							{
+								
+								$testSuperados+= compararCodigoPython($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
+						
+								print_r($error);
+							}else
+							{
+								//se crea un nuevo testIntento NO superado
+							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+								
+							}
+							
+							fclose($pipes[1]);
+							fclose($pipes[2]);		
+							$return_value = proc_close($process);
+
+						} #fin if
+
+					}#fin if
+				}#fin for
+
+				if ($cantidadTest == $testSuperados) {
+				 	$superado = 1;
+				 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
+				 	$porcentaje = 100;
+
+				 	#se calcula el puntaje
 				 	$puntaje = $nivelDificultad * $porcentaje;
-				 	
 				 	#se cambia el puntaje del intento
 				 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
-			 		
-			 	}else{
-			 		$porcentaje = 0;
-			 	}
+				 	
+				 } else{
 
-			 }
-			 
-		}#fin if REQUEST_METHOD	
-	}#fin if lenguaje python	
+				 	if ($cantidadTest != 0) {
+				 		#se calcula el porcentaje aprobado 
+				 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
 
-	#si la solución se presenta en java
-	if ($lenguaje=="java") {
-		if ($_SERVER['REQUEST_METHOD'] =='POST'){
-			$codigo = $_POST['codigo'];
-			#$texto = "hola";
-			$error="";
-			echo $codigo;
-			
-			//t carpeta donde se guardaran los archivos java, suma2.java archivo con el codigo java a ejecutar
-			/*$process_cmd = "cd archivosJava;/usr/bin/javac suma2.java";
-			$env = NULL;
-			$options = ["bypass_shell" => true];
-			$cwd = NULL;
+				 		#se calcula el puntaje
+					 	$puntaje = $nivelDificultad * $porcentaje;
+					 	
+					 	#se cambia el puntaje del intento
+					 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
+				 		
+				 	}else{
+				 		$porcentaje = 0;
+				 	}
 
-
-			$descriptorspec =array( 
-				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
-				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
-				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
-				);
-
-			$process2 = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
-
-			if (is_resource($process2)) 
-			{
-				fwrite($pipes[0], $texto);
-				fclose($pipes[0]);
-
-				$salida= stream_get_contents($pipes[1]);
-				$error = stream_get_contents($pipes[2]);
-
-				print_r($salida);	
-				print_r($error);
-
-				fclose($pipes[1]);
-				fclose($pipes[2]);		
-				$return_value = proc_close($process2);
-
-			}
-			
-			$process_cmd = "cd t;/usr/bin/java suma2";
-			$env = NULL;
-			$options = ["bypass_shell" => true];
-			$cwd = NULL;
-			$descriptorspec =array( 
-				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
-				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
-				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
-				);
-				$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
-
-
-			if (is_resource($process)) 
-			{
-				fwrite($pipes[0], $texto);
-				fclose($pipes[0]);
-
-				$salida= stream_get_contents($pipes[1]);
-				$error = stream_get_contents($pipes[2]);
-
-				print_r($salida);
-						
-				print_r($error);
-
-				fclose($pipes[1]);
-				fclose($pipes[2]);		
-				$return_value = proc_close($process);
-
-				#echo "Comando retorno $return_value/n";
-			}
-
-			exec("cd t;rm suma2.class");*/
-		}#fin if REQUEST_METHOD
-	}#fin if lenguaje java
+				 }
+				 
+			}#fin if REQUEST_METHOD	
+		}#fin if lenguaje python	
 		/**
 		*Eliminar archivo temporal código profesor
 		**/
 		fclose($temp);
-		
-		require "../vistas/Reto.view.php";
+
+		#si la solución se presenta en java
+		if ($lenguaje=="java") {
+			if ($_SERVER['REQUEST_METHOD'] =='POST'){
+
+				$codigo = $_POST['codigo'];
+				$error="";
+
+				//////////////////////////////////////////////////////////
+				//			 	 Archivos Temporales Java				//
+				//////////////////////////////////////////////////////////
+				$temporalJava = fopen('/tmp/tempEstudiante'.$idEstudiante.'.java', "a+");
+				fwrite($temporalJava, "import java.util.Scanner; public class tempEstudiante".$idEstudiante."{ public static void main(String args[]){");
+				fwrite($temporalJava, $codigo);
+				fwrite($temporalJava, "}}");
+				fclose($temporalJava);
+
+				for ($i=0; $i < count($tests); $i++) 
+				{ 
+					$test = $tests[$i];
+					if ($test['lenguaje']== "java") {
+						$valor = $test['valores'];
+
+						//t carpeta donde se guardaran los archivos java, suma2.java archivo con el codigo java a ejecutar
+						$process_cmd = "cd /tmp;/usr/bin/javac tempEstudiante".$idEstudiante.".java";
+						$env = NULL;
+						$options = ["bypass_shell" => true];
+						$cwd = NULL;
+
+
+						$descriptorspec =array( 
+							0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+							1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+							);
+						//process2 proceso para compilar java - errores de sintaxis (syntax error)
+						$process2 = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+						if (is_resource($process2)) 
+						{
+							#fwrite($pipes[0]);
+							#fclose($pipes[0]);
+
+							#$salida= stream_get_contents($pipes[1]);
+							$error = stream_get_contents($pipes[2]);
+
+							#print_r($salida);	
+							print_r($error);
+
+							fclose($pipes[1]);
+							fclose($pipes[2]);		
+							$return_value = proc_close($process2);
+
+						}
+						//proceso para ejecutar java - salidas, errores de ejecucion (null pointer exception)
+						$process_cmd = "cd /tmp;/usr/bin/java tempEstudiante".$idEstudiante;
+						$env = NULL;
+						$options = ["bypass_shell" => true];
+						$cwd = NULL;
+						// 
+						$descriptorspec =array( 
+							0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+							1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+							);
+							$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+
+						if (is_resource($process)) 
+						{
+							fwrite($pipes[0], $valor);
+							fclose($pipes[0]);
+
+							$salida= stream_get_contents($pipes[1]);
+							$error = stream_get_contents($pipes[2]);
+
+							print_r($salida);
+									
+							print_r($error);
+
+							fclose($pipes[1]);
+							fclose($pipes[2]);		
+							$return_value = proc_close($process);
+
+							#echo "Comando retorno $return_value/n";
+						}
+
+					}
+				}#fin for tests
+
+				
+
+				exec("cd /tmp;rm tempEstudiante".$idEstudiante.".class");
+				exec("cd /tmp; rm tempEstudiante".$idEstudiante.".java");
+			}#fin if REQUEST_METHOD
+		}#fin if lenguaje java
+			
+			require "../vistas/Reto.view.php";
 	}else {
 		header('Location: ../vistas/Error.php');
 	}

@@ -1,0 +1,11 @@
+import java.util.Scanner;
+
+public class suma2{
+	public static void main(String args[]){
+		Scanner teclado = new Scanner (System.in);
+		String a, b;
+		a = teclado.nextLine();
+		b = teclado.nextLine();
+		System.out.println("----"+a+" && "+b);
+	}
+}
