@@ -310,9 +310,6 @@
 
 						if (is_resource($process2)) 
 						{
-							#fwrite($pipes[0]);
-							#fclose($pipes[0]);
-
 							#$salida= stream_get_contents($pipes[1]);
 							$error = stream_get_contents($pipes[2]);
 
@@ -329,14 +326,13 @@
 						$env = NULL;
 						$options = ["bypass_shell" => true];
 						$cwd = NULL;
-						// 
+				
 						$descriptorspec =array( 
 							0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
 							1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
 							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
 							);
 							$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
-
 
 						if (is_resource($process)) 
 						{
@@ -353,14 +349,10 @@
 							fclose($pipes[1]);
 							fclose($pipes[2]);		
 							$return_value = proc_close($process);
-
-							#echo "Comando retorno $return_value/n";
 						}
 
 					}
 				}#fin for tests
-
-				
 
 				exec("cd /tmp;rm tempEstudiante".$idEstudiante.".class");
 				exec("cd /tmp; rm tempEstudiante".$idEstudiante.".java");
