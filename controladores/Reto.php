@@ -10,11 +10,11 @@
 	//					Entidades a usar					//
 	//////////////////////////////////////////////////////////
 
-		$reto = new RetoModelo();
-		$testModelo = new TestModelo();
-		$intento = new IntentoModelo();
-		$testIntento = new TestIntentoModelo();
-		$estudiante = new EstudianteModelo();
+	$reto = new RetoModelo();
+	$testModelo = new TestModelo();
+	$intento = new IntentoModelo();
+	$testIntento = new TestIntentoModelo();
+	$estudiante = new EstudianteModelo();
 
 
 	/**
@@ -62,31 +62,31 @@
 		//						Variables						//
 		//////////////////////////////////////////////////////////	
 
-			$nombreReto = $reto->nombreReto($idReto);
-			$espacioAcademico = $reto->espacioAcademicoReto($idReto);	
+		$nombreReto = $reto->nombreReto($idReto);
+		$espacioAcademico = $reto->espacioAcademicoReto($idReto);	
 
-			$temaReto = $reto->temaReto($idReto);
+		$temaReto = $reto->temaReto($idReto);
 
-			$datosReto = $reto->informacionReto($idReto);
+		$datosReto = $reto->informacionReto($idReto);
 
-			$nivelDificultad = $datosReto[0]['nivelDificultad'];
+		$nivelDificultad = $datosReto[0]['nivelDificultad'];
 
-			$tests = $testModelo->informacionTest($idReto);
+		$tests = $testModelo->informacionTest($idReto);
 
-			#lenguaje en que se intentara resolver el reto
-			$lenguajeIntento = "";	
+		#lenguaje en que se intentara resolver el reto
+		$lenguajeIntento = "";	
 
-			$respuesta = $reto->respuestaPython($idReto);
-			$codigo = "";
+		$respuesta = $reto->respuestaPython($idReto);
+		$codigo = "";
 
-			$contenidoLi = "";
-			$i = 1;
+		$contenidoLi = "";
+		$i = 1;
 
-			$porcentaje = 0;
-			$rSuperado = 0;
-			$isSuperado	= "";
+		$porcentaje = 0;
+		$rSuperado = 0;
+		$isSuperado	= "";
+
 		//se muestran los test visibles del reto
-
 		for ($j=0; $j < count($tests); $j++) 
 		{ 
 
@@ -96,7 +96,7 @@
 			$lenguajeIntento = $lenguaje; //se debe defnir segun la seleccion
 			if($test['visible'] == 1 and $test['lenguaje']==$lenguajeIntento){
 				
-					$contenidoLi.= '<div id="div'.$test['id'].'" class="alert alert-info"  ><li id="test'.$test['id'].'" >Test '.$i.'. '.$test['descripcion'].'</li></div>';
+				$contenidoLi.= '<div id="div'.$test['id'].'" class="alert alert-info"  ><li id="test'.$test['id'].'" >Test '.$i.'. '.$test['descripcion'].'</li></div>';
 				$i++;	
 			}
 		}
@@ -106,15 +106,15 @@
 		//					Archivos Temporales					//
 		//////////////////////////////////////////////////////////
 
-			/**
-			*Archivo temporal para ejecutar 
-			*el código python del profesor
-			**/
+		/**
+		*Archivo temporal para ejecutar 
+		*el código python del profesor
+		**/
 
-			$temp = tmpfile();
-			fwrite($temp, $respuesta);
-			fseek($temp, 0);
-			$tempA= fread($temp, 1024);	
+		$temp = tmpfile();
+		fwrite($temp, $respuesta);
+		fseek($temp, 0);
+		$tempA= fread($temp, 1024);	
 
 		//////////////////////////////////////////////////////////
 		//				  	     Métodos			  	 	    //
@@ -122,51 +122,47 @@
 
 			//crear otro comparar para java
 
-			/**
-			*Método que compara las salidas del código del estudiante
-			*con las del código del profesor
-			*/
-			function compararCodigoPython($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
-			{
-				$descriptorspec =array(
-					0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
-					1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
-				);
+		/**
+		*Método que compara las salidas del código del estudiante
+		*con las del código del profesor
+		*/
+		function compararCodigoPython($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
+		{
+			$descriptorspec =array(
+				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+			);
 
-					$process = proc_open('python -c "'.$tempA.'"', $descriptorspec, $pipes);
+			$process = proc_open('python -c "'.$tempA.'"', $descriptorspec, $pipes);
 
-					if (is_resource($process)) 
-					{
-						fwrite($pipes[0], $valor);
-						fclose($pipes[0]);
+			if (is_resource($process)){
+				fwrite($pipes[0], $valor);
+				fclose($pipes[0]);
+					
+				if ($salidaEstudiante == stream_get_contents($pipes[1])){
+					//se crea un nuevo testIntento SUPERADO
+					$superado = 1;
+					//se aumenta un reto superado
+					$rSuperado++;
+					
+					//se crea un intento test SUPERADO
+					$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+
+					//se retornan la cantidad de retos superados
+					return $rSuperado;
+				}else{
+					//se crea un nuevo testIntento NO superado
+					$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+							
+					print_r(stream_get_contents($pipes[1]));
 						
+				}
+						
+					fclose($pipes[1]);
+					$return_value = proc_close($process);
+			}
 
-						if ($salidaEstudiante == stream_get_contents($pipes[1]))
-						{
-							//se crea un nuevo testIntento SUPERADO
-							$superado = 1;
-							//se aumenta un reto superado
-							$rSuperado++;
-							
-							//se crea un intento test SUPERADO
-						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
-
-							//se retornan la cantidad de retos superados
-							return $rSuperado;
-						}else {
-							//se crea un nuevo testIntento NO superado
-						$testIntento->crearTestIntento($superado, $idIntento, $idTest);
-							
-							print_r(stream_get_contents($pipes[1]));
-							
-						}
-							
-						fclose($pipes[1]);
-
-						$return_value = proc_close($process);
-					}
-
-			}#fin metodo compararCodigoPython
+		}#fin metodo compararCodigoPython
 
 		#si el usuario presentara el reto en python
 		if($lenguaje=="python"){
@@ -202,9 +198,7 @@
 
 						$process = proc_open('python -c "'.$codigo.'"', $descriptorspec, $pipes);
 
-						if (is_resource($process)) 
-						
-						{	
+						if (is_resource($process)){	
 							fwrite($pipes[0], $valor);
 							fclose($pipes[0]);
 
@@ -214,16 +208,13 @@
 							//id del test que se esta evaluando
 							$idTest = $tests[$i]['id'];
 
-							if (!is_null($salida)) 
-							{
-								
+							if (!is_null($salida)){				
 								$testSuperados+= compararCodigoPython($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
 						
 								print_r($error);
-							}else
-							{
+							}else{
 								//se crea un nuevo testIntento NO superado
-							$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+								$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 								
 							}
 							
@@ -232,11 +223,10 @@
 							$return_value = proc_close($process);
 
 						} #fin if
-
 					}#fin if
 				}#fin for
 
-				if ($cantidadTest == $testSuperados) {
+				if ($cantidadTest == $testSuperados){
 				 	$superado = 1;
 				 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
 				 	$porcentaje = 100;
@@ -246,7 +236,7 @@
 				 	#se cambia el puntaje del intento
 				 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
 				 	
-				 } else{
+				} else{
 
 				 	if ($cantidadTest != 0) {
 				 		#se calcula el porcentaje aprobado 
@@ -261,9 +251,7 @@
 				 	}else{
 				 		$porcentaje = 0;
 				 	}
-
-				 }
-				 
+				}		 
 			}#fin if REQUEST_METHOD	
 		}#fin if lenguaje python	
 		/**
@@ -308,8 +296,7 @@
 						//process2 proceso para compilar java - errores de sintaxis (syntax error)
 						$process2 = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
 
-						if (is_resource($process2)) 
-						{
+						if (is_resource($process2)){
 							#$salida= stream_get_contents($pipes[1]);
 							$error = stream_get_contents($pipes[2]);
 
@@ -331,11 +318,10 @@
 							0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
 							1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
 							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
-							);
+						);
 							$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
 
-						if (is_resource($process)) 
-						{
+						if (is_resource($process)){
 							fwrite($pipes[0], $valor);
 							fclose($pipes[0]);
 
