@@ -109,12 +109,12 @@
 		*con las del código del profesor
 		*para el lenguaje java
 		*/
-		function compararCodigoJava($salidaEstudiante,$valor, $idEstudiante, $respuestaJava)
+		function compararCodigoJava($salidaEstudiante,$valor, $idEstudiante, $respuestaJava, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado)
 		{
 			$error="";
-			//////////////////////////////////////////////////////////
-			//			 	 Archivos Temporales Java				//
-			//////////////////////////////////////////////////////////
+			//////////////////////////////////
+			//   Archivos Temporales Java   //
+			//////////////////////////////////
 			$temporalJava = fopen('/tmp/tempProfesor'.$idEstudiante.'.java', "a+");
 			fwrite($temporalJava, "import java.util.Scanner; public class tempProfesor".$idEstudiante."{ public static void main(String args[]){");
 			fwrite($temporalJava, $respuestaJava);
@@ -168,42 +168,53 @@
 				#$error = stream_get_contents($pipes[2]);
 
 				if ($salida == $salidaEstudiante) {
-					echo "bien hecho";
-					#print_r($salida);
+					//se crea un nuevo testIntento SUPERADO
+					$superado = 1;
+					//se aumenta un reto superado
+					$rSuperado++;
+					
+					//se crea un intento test SUPERADO
+					$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+
+					//se retornan la cantidad de retos superados
+					return $rSuperado;
 				}else{
-					echo "revisa tu codigo";
+					//se crea un nuevo testIntento NO superado
+					$testIntento->crearTestIntento($superado, $idIntento, $idTest);
+							
+					print_r(stream_get_contents($pipes[1]));
 				}
 							
-				#print_r($error);
-
 				fclose($pipes[1]);
 				fclose($pipes[2]);		
 				$return_value = proc_close($process);
 			}	
+			//Eliminar archivo temporal código profesor
 			exec("cd /tmp;rm tempProfesor".$idEstudiante.".class");
 			exec("cd /tmp; rm tempProfesor".$idEstudiante.".java");		
-		}
+		}#fin método compararCodigoJava
 
-		/////////////////////////////
-		//   Archivos Temporales   //
-		/////////////////////////////
-
-		/**
-		*Archivo temporal para ejecutar 
-		*el código python del profesor
-		**/
-		$temp = tmpfile();
-		fwrite($temp, $respuesta);
-		fseek($temp, 0);
-		$tempA= fread($temp, 1024);	
 
 		/**
 		*Método que compara las salidas del código del estudiante
 		*con las del código del profesor
 		*para el lenguaje python
 		*/
-		function compararCodigoPython($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
+		function compararCodigoPython($salidaEstudiante, $valor, $respuesta, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado)
 		{
+			/////////////////////////////
+			//   Archivos Temporales   //
+			/////////////////////////////
+
+			/**
+			*Archivo temporal para ejecutar 
+			*el código python del profesor
+			**/
+			$temp = tmpfile();
+			fwrite($temp, $respuesta);
+			fseek($temp, 0);
+			$tempA= fread($temp, 1024);	
+
 			$descriptorspec =array(
 				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
 				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
@@ -237,12 +248,14 @@
 					fclose($pipes[1]);
 					$return_value = proc_close($process);
 			}
-
-		}#fin metodo compararCodigoPython
+			//Eliminar archivo temporal código profesor
+			fclose($temp);
+		}#fin método compararCodigoPython
 
 		#si el usuario presentara el reto en python
 		if($lenguaje=="python"){
-			if ($_SERVER['REQUEST_METHOD'] =='POST'){	
+			if ($_SERVER['REQUEST_METHOD'] =='POST'){
+				//cambio del valor de la variable presionaBoton	
 				$presionaBoton = 1;
 				//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
 				$date = getdate();
@@ -285,7 +298,7 @@
 							$idTest = $tests[$i]['id'];
 
 							if (!is_null($salida)){				
-								$testSuperados+= compararCodigoPython($salida, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
+								$testSuperados+= compararCodigoPython($salida, $valor, $respuesta, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);				
 						
 								print_r($error);
 							}else{
@@ -330,10 +343,6 @@
 				}		 
 			}#fin if REQUEST_METHOD	
 		}#fin if lenguaje python	
-		/**
-		*Eliminar archivo temporal código profesor
-		**/
-		fclose($temp);
 
 		#si la solución se presenta en java
 		if ($lenguaje=="java") {
@@ -342,9 +351,22 @@
 				$codigo = $_POST['codigo'];
 				$error="";
 
-				//////////////////////////////////////////////////////////
-				//			 	 Archivos Temporales Java				//
-				//////////////////////////////////////////////////////////
+				//cambio del valor de la variable presionaBoton	
+				$presionaBoton = 1;
+				//se obtiene la fecha actual del sistema y se acomoda para el formato mysql
+				$date = getdate();
+				$fecha = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
+
+				$cantidadTest = $reto->cantidadTest($idReto, $lenguajeIntento);
+				 
+				//se crea un nuevo intento cuando el usuario presiona el boton
+				$intento->crearIntento($fecha, $superado, $puntaje, $idReto, $idEstudiante);
+				//se obtiene el id del intento creado
+				$idIntento = $intento->idIntento($idReto, $idEstudiante);
+
+				//////////////////////////////////
+				//   Archivos Temporales Java   //				
+				//////////////////////////////////
 				$temporalJava = fopen('/tmp/tempEstudiante'.$idEstudiante.'.java', "a+");
 				fwrite($temporalJava, "import java.util.Scanner; public class tempEstudiante".$idEstudiante."{ public static void main(String args[]){");
 				fwrite($temporalJava, $codigo);
@@ -403,11 +425,15 @@
 							$salida= stream_get_contents($pipes[1]);
 							$error = stream_get_contents($pipes[2]);
 
-							#print_r($salida);	
+							//id del test que se esta evaluando
+							$idTest = $tests[$i]['id'];	
 							if (!is_null($salida)){
-								compararCodigoJava($salida, $valor, $idEstudiante, $respuestaJava);
+								$testSuperados+=compararCodigoJava($salida, $valor, $idEstudiante, $respuestaJava, $idTest, $testIntento, $superado, $idIntento, $testSuperados, $rSuperado);
+								print_r($error);
+							}else{
+								//se crea un nuevo testIntento NO superado
+								$testIntento->crearTestIntento($superado, $idIntento, $idTest);
 							}
-							print_r($error);
 
 							fclose($pipes[1]);
 							fclose($pipes[2]);		
@@ -419,6 +445,33 @@
 
 				exec("cd /tmp;rm tempEstudiante".$idEstudiante.".class");
 				exec("cd /tmp; rm tempEstudiante".$idEstudiante.".java");
+
+				if ($cantidadTest == $testSuperados){
+				 	$superado = 1;
+				 	$intento->cambiarEstado($idIntento, $idReto, $idEstudiante, $superado);
+				 	$porcentaje = 100;
+
+				 	#se calcula el puntaje
+				 	$puntaje = $nivelDificultad * $porcentaje;
+				 	#se cambia el puntaje del intento
+				 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
+				 	
+				} else{
+
+				 	if ($cantidadTest != 0) {
+				 		#se calcula el porcentaje aprobado 
+				 		$porcentaje = ($testSuperados * 100) /$cantidadTest;
+
+				 		#se calcula el puntaje
+					 	$puntaje = $nivelDificultad * $porcentaje;
+					 	
+					 	#se cambia el puntaje del intento
+					 	$intento->cambiarPuntaje($puntaje, $idIntento, $idReto, $idEstudiante);
+				 		
+				 	}else{
+				 		$porcentaje = 0;
+				 	}
+				}
 			}#fin if REQUEST_METHOD
 		}#fin if lenguaje java
 			
