@@ -147,6 +147,7 @@
 
 			return $datos;
 		}
+
 		/**
 		*Método que retorna el grupo al que pertenece el reto dado su id
 		*/
@@ -166,6 +167,20 @@
 	  	public function respuestaPython($id)
 	  	{
 	  		$sql= "SELECT `solucionPython` FROM `Reto` WHERE `id`= $id";
+	  		$consulta=$this->query($sql);
+
+	  		$datos=array();
+	  		$datos = $consulta->fetch();
+	  		$respuesta = $datos[0];
+	  		
+	  		return $respuesta;
+	  	}
+	  	/**
+		*Método que lista la solucion java del reto
+		*/
+	  	public function respuestaJava($id)
+	  	{
+	  		$sql= "SELECT `solucionJava` FROM `Reto` WHERE `id`= $id";
 	  		$consulta=$this->query($sql);
 
 	  		$datos=array();

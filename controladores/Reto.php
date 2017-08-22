@@ -16,7 +16,6 @@
 	$testIntento = new TestIntentoModelo();
 	$estudiante = new EstudianteModelo();
 
-
 	/**
 	*Determinar si la sesión está definida 
 	*/
@@ -28,7 +27,6 @@
 		$documentoEstudiante = $_SESSION['documento'];
 		$idEstudiante = $estudiante->idEstudiante($documentoEstudiante);
 		
-
 		/**
 		*$id id del reto
 		*Se verifica que se haya enviado un id valido por la url
@@ -57,7 +55,6 @@
 			header('Location: ../Index.php');
 		}
 
-
 		//////////////////////////////////////////////////////////
 		//						Variables						//
 		//////////////////////////////////////////////////////////	
@@ -77,6 +74,8 @@
 		$lenguajeIntento = "";	
 
 		$respuesta = $reto->respuestaPython($idReto);
+		$respuestaJava = $reto->respuestaJava($idReto);
+
 		$codigo = "";
 
 		$contenidoLi = "";
@@ -100,31 +99,108 @@
 				$i++;	
 			}
 		}
-		
-		
-		//////////////////////////////////////////////////////////
-		//					Archivos Temporales					//
-		//////////////////////////////////////////////////////////
-
-		/**
-		*Archivo temporal para ejecutar 
-		*el código python del profesor
-		**/
-
-		$temp = tmpfile();
-		fwrite($temp, $respuesta);
-		fseek($temp, 0);
-		$tempA= fread($temp, 1024);	
 
 		//////////////////////////////////////////////////////////
 		//				  	     Métodos			  	 	    //
 		//////////////////////////////////////////////////////////
 
-			//crear otro comparar para java
+		/**
+		*Método que compara las salidas del código del estudiante
+		*con las del código del profesor
+		*para el lenguaje java
+		*/
+		function compararCodigoJava($salidaEstudiante,$valor, $idEstudiante, $respuestaJava)
+		{
+			$error="";
+			//////////////////////////////////////////////////////////
+			//			 	 Archivos Temporales Java				//
+			//////////////////////////////////////////////////////////
+			$temporalJava = fopen('/tmp/tempProfesor'.$idEstudiante.'.java', "a+");
+			fwrite($temporalJava, "import java.util.Scanner; public class tempProfesor".$idEstudiante."{ public static void main(String args[]){");
+			fwrite($temporalJava, $respuestaJava);
+			fwrite($temporalJava, "}}");
+			fclose($temporalJava);
+
+			//t carpeta donde se guardaran los archivos java, suma2.java archivo con el codigo java a ejecutar
+			$process_cmd = "cd /tmp;/usr/bin/javac tempProfesor".$idEstudiante.".java";
+			$env = NULL;
+			$options = ["bypass_shell" => true];
+			$cwd = NULL;
+
+			$descriptorspec =array( 
+				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+			);
+			//process2 proceso para compilar java - errores de sintaxis (syntax error)
+			$process2 = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+			if (is_resource($process2)){
+				#$salida= stream_get_contents($pipes[1]);
+				$error = stream_get_contents($pipes[2]);
+
+				#print_r($salida);	
+				print_r($error);
+
+				fclose($pipes[1]);
+				fclose($pipes[2]);		
+				$return_value = proc_close($process2);
+
+			}
+			//proceso para ejecutar java - salidas, errores de ejecucion (null pointer exception)
+			$process_cmd = "cd /tmp;/usr/bin/java tempProfesor".$idEstudiante;
+			$env = NULL;
+			$options = ["bypass_shell" => true];
+			$cwd = NULL;
+				
+			$descriptorspec =array( 
+				0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
+				1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
+				2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
+			);
+			$process = proc_open($process_cmd, $descriptorspec, $pipes, $cwd, $env, $options);
+
+			if (is_resource($process)){
+				fwrite($pipes[0], $valor);
+				fclose($pipes[0]);
+
+				$salida= stream_get_contents($pipes[1]);
+				#$error = stream_get_contents($pipes[2]);
+
+				if ($salida == $salidaEstudiante) {
+					echo "bien hecho";
+					#print_r($salida);
+				}else{
+					echo "revisa tu codigo";
+				}
+							
+				#print_r($error);
+
+				fclose($pipes[1]);
+				fclose($pipes[2]);		
+				$return_value = proc_close($process);
+			}	
+			exec("cd /tmp;rm tempProfesor".$idEstudiante.".class");
+			exec("cd /tmp; rm tempProfesor".$idEstudiante.".java");		
+		}
+
+		/////////////////////////////
+		//   Archivos Temporales   //
+		/////////////////////////////
+
+		/**
+		*Archivo temporal para ejecutar 
+		*el código python del profesor
+		**/
+		$temp = tmpfile();
+		fwrite($temp, $respuesta);
+		fseek($temp, 0);
+		$tempA= fread($temp, 1024);	
 
 		/**
 		*Método que compara las salidas del código del estudiante
 		*con las del código del profesor
+		*para el lenguaje python
 		*/
 		function compararCodigoPython($salidaEstudiante, $valor, $tempA, $idTest, $testIntento, $superado, $idIntento, $testSuperados,$rSuperado)
 		{
@@ -287,7 +363,6 @@
 						$options = ["bypass_shell" => true];
 						$cwd = NULL;
 
-
 						$descriptorspec =array( 
 							0 => array("pipe", "r"),  //gestor de escritura conectado al stdin hijo
 							1 => array("pipe", "w"),  //gestor de lectura conectado al stdout hijo
@@ -328,8 +403,10 @@
 							$salida= stream_get_contents($pipes[1]);
 							$error = stream_get_contents($pipes[2]);
 
-							print_r($salida);
-									
+							#print_r($salida);	
+							if (!is_null($salida)){
+								compararCodigoJava($salida, $valor, $idEstudiante, $respuestaJava);
+							}
 							print_r($error);
 
 							fclose($pipes[1]);
