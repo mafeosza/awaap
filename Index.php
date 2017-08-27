@@ -2,9 +2,11 @@
 	
 	require "modelos/EstudianteModelo.php";
 	require "modelos/ProfesorModelo.php";
+	require "modelos/AdministradorModelo.php";
 
 	$estudiante = new EstudianteModelo();
 	$profesor = new ProfesorModelo();
+	$administrador = new AdministradorModelo();
 
 	$errores= '';
 
@@ -22,6 +24,10 @@
 		}elseif ($profesor->verificarProfesor($_SESSION['documento'])) {
 			//se redirecciona al inicio de los profesores
 			header('Location: controladores/InicioProfesor.php');
+
+		//de lo contrario si el documento pertenece al administrador	
+		}elseif () {
+			# code...
 		}
 	}
 	/**

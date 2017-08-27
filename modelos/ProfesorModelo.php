@@ -60,7 +60,7 @@
 		}
 
 		/**
-		*Método que registra un usuario
+		*Método que registra un profesor
 		*/
 		public function registrarProfesor($documento, $nombre, $email, $password){
 			$sql = "INSERT INTO `Profesor` (`documento`, `nombre`, `correo`, `clave`) VALUES ('$documento', '$nombre', '$email', '$password')";
