@@ -75,7 +75,7 @@
 				</thead>
 				<tbody>
 					<?php foreach ($informacionEstudiante as $infoEstudiante) 
-						{
+						{	
 							if ($infoEstudiante['superado'] == 1) {
 					?>
 

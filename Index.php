@@ -26,8 +26,9 @@
 			header('Location: controladores/InicioProfesor.php');
 
 		//de lo contrario si el documento pertenece al administrador	
-		}elseif () {
-			# code...
+		}elseif ($administrador->verificarAdministrador($_SESSION['documento'])) {
+			//se redirecciona al inicio del administrador
+			header('Location: controladores/InicioAdministrador.php');
 		}
 	}
 	/**
@@ -38,7 +39,7 @@
 
 		$password = $_POST['password'];
 
-		if ($estudiante->loginEstudiante($documento, $password) != false || $profesor->loginProfesor($documento, $password)) {
+		if ($estudiante->loginEstudiante($documento, $password) != false || $profesor->loginProfesor($documento, $password) != false || $administrador->loginAdministrador($documento, $password) != false) {
 
 			$_SESSION['documento']=$documento;
 			header('Location: Index.php');

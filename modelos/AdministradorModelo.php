@@ -38,7 +38,7 @@
 		*/
 		public function  verificarAdministrador($documento)
 		{
-			$sql = "SELECT * FROM `Administrador` WHERE `documento` = $documento";
+			$sql = "SELECT * FROM `Administrador` WHERE `documento` = '$documento'";
 			$consulta = $this->query($sql);
 			$resultado = $consulta->fetch();
 
@@ -49,7 +49,7 @@
 		* Método que retorna el nombre de un administrador dado su documento
 		*/
 		public function nombreAdministrador($documento){
-			$sql = "SELECT `nombre` FROM `Administrador` WHERE `documento` = $documento";
+			$sql = "SELECT `nombre` FROM `Administrador` WHERE `documento` = '$documento'";
 			$consulta = $this->query($sql);
 			
 			$datos= array();
@@ -64,7 +64,7 @@
 		*/
 		public function loginAdministrador($documento, $password){
 
-			$sql = "SELECT `clave` FROM `Administrador` WHERE `documento` = $documento";
+			$sql = "SELECT `clave` FROM `Administrador` WHERE `documento` = '$documento'";
 			$consulta = $this->query($sql);
 			
 			$datos= array();

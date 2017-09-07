@@ -33,6 +33,18 @@
 			$clave = "";
 		}
 
+		/*
+		*Método que retorna todos los profesores
+		*/
+		public function listarProfesores()
+		{
+			$sql = "SELECT * FROM `Profesor`";
+			$consulta = $this->query($sql);
+			$resultado = $consulta->fetchAll();
+
+			return $resultado;
+		}
+
 		/**
 		*Método que verifique si un profesor ya esta registrado
 		*/

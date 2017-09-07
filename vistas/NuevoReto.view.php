@@ -74,13 +74,14 @@
 		<h1>AWA<sup>2</sup>P</h1>	
 		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
 	</div>
-
 	<div class="container-fluid ">
 		<div class="panel">
 			
 			<h2>Nuevo Reto</h2>
 			<article class="row">
 				<form  name="formulario" class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
+
+
 					<fieldset>
 						<div id="legend">
 							<br>

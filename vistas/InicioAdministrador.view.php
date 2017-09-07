@@ -5,20 +5,74 @@
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   	<style>
-		.glyphicon { margin-right:10px; }
+		.fa { margin-right:10px; }
+		.fa-trash-o{
+			font-size:24px;
+			color: red;
+		}
+		.fa-pencil{
+			font-size:24px;
+			color: yellow;
+		}
 		.panel-body { padding:0px; }
 		.panel-body table tr td { padding-left: 15px }
 		.panel-body .table {margin-bottom: 0px; }
+		#iconMas{
+			height: 5%;
+  			width: 5%;
+		}
+		#iconEditar, #iconEliminar{
+			height: 5%;
+  			width: 3%;	
+		}
   	</style>
+  	<script>
+  		$(document).on('ready', function(){
+	  		$( "#tituloEspacios" ).click(function() {
+	  			$("#bienvenido").css("display", "none");
+				$("#espaciosAcademicos").show();
+				$("#estudiantes").css("display", "none");
+				$("#profesores").css("display", "none");
+				$("#grupos").css("display", "none");
+			});
+			$( "#tituloEstudiantes" ).click(function() {
+	  			$("#bienvenido").css("display", "none");
+				$("#estudiantes").show();
+				$("#espaciosAcademicos").css("display", "none")
+				$("#profesores").css("display", "none");
+				$("#grupos").css("display", "none");
+			});
+			$( "#tituloProfesores" ).click(function() {
+	  			$("#bienvenido").css("display", "none");
+				$("#profesores").show();
+				$("#espaciosAcademicos").css("display", "none")
+				$("#estudiantes").css("display", "none");
+				$("#grupos").css("display", "none");
+			});
+			$( "#tituloGrupos" ).click(function() {
+	  			$("#bienvenido").css("display", "none");
+				$("#grupos").show();
+				$("#espaciosAcademicos").css("display", "none")
+				$("#estudiantes").css("display", "none");
+				$("#profesores").css("display", "none");
+			});
+  		})
+  	</script>
 </head>
 <body>
+	<div style="text-align: right;">
+		<a href="../controladores/Cerrar.php"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesi&oacute;n</a>
+	</div>
 	<div class="container-fluid text-center">
 		<h1>AWA<sup>2</sup>P</h1>	
 		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
 	</div>	
+	<!--Navegador vertical-->
 	<div class="container">
 	    <div class="row">
 	        <div class="col-sm-3 col-md-3">
@@ -26,32 +80,15 @@
 	                <div class="panel panel-default">
 	                    <div class="panel-heading">
 	                        <h4 class="panel-title">
-	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
-	                            </span>Espacios Acad&eacute;micos</a>
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEspacios" id="tituloEspacios"><i class="fa fa-book" aria-hidden="true"></i>Espacios Acad&eacute;micos</a>
 	                        </h4>
 	                    </div>
-	                    <div id="collapseOne" class="panel-collapse collapse in">
+	                    <div id="collapseEspacios" class="panel-collapse collapse">
 	                        <div class="panel-body">
 	                            <table class="table">
 	                                <tr>
 	                                    <td>
-	                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="http://www.jquery2dotnet.com">Articles</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-flash text-success"></span><a href="http://www.jquery2dotnet.com">News</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
-	                                        <span class="badge">42</span>
+	                                        <a href="#reoprtePorEspacio">Reportes Por Espacio Acad&eacute;mico</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -61,31 +98,20 @@
 	                <div class="panel panel-default">
 	                    <div class="panel-heading">
 	                        <h4 class="panel-title">
-	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
-	                            </span>Estudiante</a>
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEstudiantes" id="tituloEstudiantes"><i class="fa fa-user" aria-hidden="true"></i>Estudiantes</a>
 	                        </h4>
 	                    </div>
-	                    <div id="collapseTwo" class="panel-collapse collapse">
+	                    <div id="collapseEstudiantes" class="panel-collapse collapse">
 	                        <div class="panel-body">
 	                            <table class="table">
-	                                <tr>
+	                            	<tr>
 	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Orders</a> <span class="label label-success">$ 320</span>
+	                                        <a href="#raquin">Mejores Puntajes</a>
 	                                    </td>
 	                                </tr>
 	                                <tr>
 	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Invoices</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Shipments</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Tex</a>
+	                                        <a href="#Progreso">Progreso Individual</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -95,32 +121,20 @@
 	                <div class="panel panel-default">
 	                    <div class="panel-heading">
 	                        <h4 class="panel-title">
-	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
-	                            </span>Profesor</a>
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseProfesores" id="tituloProfesores"><i class="fa fa-user" aria-hidden="true"></i>Profesores</a>
 	                        </h4>
 	                    </div>
-	                    <div id="collapseThree" class="panel-collapse collapse">
+	                    <div id="collapseProfesores" class="panel-collapse collapse">
 	                        <div class="panel-body">
 	                            <table class="table">
 	                                <tr>
 	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Change Password</a>
+	                                        <a href="#retos">Retos</a>
 	                                    </td>
 	                                </tr>
 	                                <tr>
 	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Notifications</a> <span class="label label-info">5</span>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <a href="http://www.jquery2dotnet.com">Import/Export</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
-	                                            Delete Account</a>
+	                                        <a href="#gruposPorProfesor">Grupos Profesor</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -130,31 +144,15 @@
 	                <div class="panel panel-default">
 	                    <div class="panel-heading">
 	                        <h4 class="panel-title">
-	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-	                            </span>Grupos</a>
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseGrupos" id="tituloGrupos"><i class="fa fa-users"></i>Grupos</a>
 	                        </h4>
 	                    </div>
-	                    <div id="collapseFour" class="panel-collapse collapse">
+	                    <div id="collapseGrupos" class="panel-collapse collapse">
 	                        <div class="panel-body">
 	                            <table class="table">
 	                                <tr>
 	                                    <td>
-	                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+	                                    	<a href="#reportes">Reporte por grupo</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -163,11 +161,107 @@
 	                </div>
 	            </div>
 	        </div>
-	        <div class="col-sm-9 col-md-9">
+	        <div class="col-sm-9 col-md-9" id="bienvenido">
 	            <div class="well">
 	                <h1>Bienvenido Administrador</h1>
 	                Panel de control
 	            </div>
+	        </div>
+	        <div class="col-sm-9 col-md-9" id="espaciosAcademicos" style="display: none;">
+	        	<table class="table table-bordered">
+	        		<thead>
+	        			<tr>
+	        				<th>ID</th>
+							<th>Nombre Espacio Acad&eacute;mico</th>
+							<th>Semestre</th>
+							<th>Acci&oacute;n</th>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+	        			<?php echo $tablaEspaciosAcademicos; ?>
+	        		</tbody>
+	        	</table>
+	        	<?php if($tablaEspaciosAcademicos==""):?>
+	        		<div style="text-align: center;">
+	        			<h3>No hay elementos</h3>
+	        		</div>
+	        	<?php endif; ?>
+	        	<div style="text-align: right;">
+	        		<a href="#agregarEspacios"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        	</div>
+	        </div>
+	        <div class="col-sm-9 col-md-9" id="estudiantes" style="display: none;">
+	        	<table class="table">
+	        		<thead>
+	        			<tr>
+	        				<th>ID</th>
+	        				<th>Documento</th>
+							<th>Nombre</th>
+							<th>Correo</th>
+							<th>Acci&oacute;n</th>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+	        			<?php echo $tablaEstudiantes; ?>
+	        		</tbody>
+	        	</table>
+	        	<?php if($tablaEstudiantes==""):?>
+	        		<div style="text-align: center;">
+	        			<h3>No hay elementos</h3>
+	        		</div>
+	        	<?php endif; ?>
+	        	<div style="text-align: right;">
+	        		<a href="#agregarEstudiantes"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        	</div>
+	        </div>
+	        <div class="col-sm-9 col-md-9" id="profesores" style="display: none;">
+	        	<table class="table">
+	        		<thead>
+	        			<tr>
+	        				<th>ID</th>
+	        				<th>Documento</th>
+							<th>Nombre</th>
+							<th>Correo</th>
+							<th>Acci&oacute;n</th>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+	        			<?php echo $tablaProfesores; ?>
+	        		</tbody>
+	        	</table>
+	        	<?php if($tablaProfesores==""):?>
+	        		<div style="text-align: center;">
+	        			<h3>No hay elementos</h3>
+	        		</div>
+	        	<?php endif; ?>
+	        	<div style="text-align: right;">
+	        		<a href="#agregarProfesores"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        	</div>
+	        </div>
+	        <div class="col-sm-9 col-md-9" id="grupos" style="display: none;">
+	        	<table class="table">
+	        		<thead>
+	        			<tr>
+	        				<th>ID</th>
+	        				<th>N&uacute;mero</th>
+	        				<th>Franja</th>
+							<th>Profesor</th>
+							<th>Espacio Acad&eacute;mico</th>
+							<th>Acci&oacute;n</th>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+	        			<?php echo $tablaGrupos; ?>
+	        		</tbody>
+	        	</table>
+	        	<?php if($tablaGrupos==""):?>
+	        		<div style="text-align: center;">
+	        			<h3>No hay elementos</h3>
+	        		</div>
+	        	<?php endif; ?>
+	        	<div style="text-align: right;">
+	        		<a href="#agregarGrupos"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        	</div>
 	        </div>
 	    </div>
 	</div>

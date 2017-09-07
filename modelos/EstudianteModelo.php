@@ -34,6 +34,18 @@
 		}
 
 		/**
+		*Método que retorna la información de todos los estudiantes
+		*/
+		public function listarEstudiantes()
+		{
+			$sql = "SELECT * FROM `Estudiante`";
+			$consulta = $this->query($sql);
+			$resultado = $consulta->fetchAll();
+
+			return $resultado;
+		}		
+
+		/**
 		*Método que verifique si un estudiante ya esta registrado
 		*/
 		public function  verificarEstudiante($documento)
