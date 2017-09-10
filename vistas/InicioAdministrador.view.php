@@ -8,7 +8,7 @@
   	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
   	<style>
 		.fa { margin-right:10px; }
 		.fa-trash-o{
@@ -18,6 +18,9 @@
 		.fa-pencil{
 			font-size:24px;
 			color: yellow;
+		}
+		.fa-user-plus{
+			font-size:24px;
 		}
 		.panel-body { padding:0px; }
 		.panel-body table tr td { padding-left: 15px }
@@ -173,8 +176,8 @@
 	        			<tr>
 	        				<th>ID</th>
 							<th>Nombre Espacio Acad&eacute;mico</th>
-							<th>Semestre</th>
-							<th>Acci&oacute;n</th>
+							<th style="text-align: center;">Semestre</th>
+							<th style="text-align: center;">Acci&oacute;n</th>
 	        			</tr>
 	        		</thead>
 	        		<tbody>
@@ -187,18 +190,18 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="#agregarEspacios"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="estudiantes" style="display: none;">
-	        	<table class="table">
+	        	<table class="table table-bordered">
 	        		<thead>
 	        			<tr>
 	        				<th>ID</th>
 	        				<th>Documento</th>
 							<th>Nombre</th>
 							<th>Correo</th>
-							<th>Acci&oacute;n</th>
+							<th style="text-align: center;">Acci&oacute;n</th>
 	        			</tr>
 	        		</thead>
 	        		<tbody>
@@ -211,18 +214,18 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="#agregarEstudiantes"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a href="../controladores/AdministradorControlador.php?a=registrarEstudiante"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="profesores" style="display: none;">
-	        	<table class="table">
+	        	<table class="table table-bordered">
 	        		<thead>
 	        			<tr>
 	        				<th>ID</th>
 	        				<th>Documento</th>
 							<th>Nombre</th>
 							<th>Correo</th>
-							<th>Acci&oacute;n</th>
+							<th style="text-align: center;">Acci&oacute;n</th>
 	        			</tr>
 	        		</thead>
 	        		<tbody>
@@ -235,11 +238,11 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="#agregarProfesores"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a href="../controladores/AdministradorControlador.php?a=registrarProfesor"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="grupos" style="display: none;">
-	        	<table class="table">
+	        	<table class="table table-bordered">
 	        		<thead>
 	        			<tr>
 	        				<th>ID</th>
@@ -247,7 +250,7 @@
 	        				<th>Franja</th>
 							<th>Profesor</th>
 							<th>Espacio Acad&eacute;mico</th>
-							<th>Acci&oacute;n</th>
+							<th style="text-align: center;">Acci&oacute;n</th>
 	        			</tr>
 	        		</thead>
 	        		<tbody>
@@ -260,7 +263,7 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="#agregarGrupos"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a href="../controladores/AdministradorControlador.php?a=crearGrupo"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	    </div>
