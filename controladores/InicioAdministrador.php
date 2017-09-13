@@ -55,7 +55,7 @@
 												<td>'.$informacionProfesores['documento'].'</td>
 												<td>'.$informacionProfesores['nombre'].'</td>
 												<td>'.$informacionProfesores['correo'].'</td>
-												<td style="text-align: center;"><a href="#editar"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="#eliminar"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+												<td style="text-align: center;"><a href="../controladores/AdministradorControlador.php?a=editarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="../controladores/AdministradorControlador.php?a=eliminarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}
@@ -69,7 +69,7 @@
 												<td>'.$informacionGrupos['franja'].'</td>
 												<td>'.$informacionGrupos['nombreProfesor'].'</td>
 												<td>'.$informacionGrupos['nombreEspacio'].'</td>
-												<td style="text-align: center;"><a href="#editar"><i class="fa fa-pencil" aria-hidden="true"></i></a><a href="#eliminar"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#adduser"><i class="fa fa-user-plus" aria-hidden="true"></i></a></td>
+												<td style="text-align: center;"><a href="../controladores/AdministradorControlador.php?a=editarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a href="../controladores/AdministradorControlador.php?a=eliminarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#adduser"><i class="fa fa-user-plus" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}

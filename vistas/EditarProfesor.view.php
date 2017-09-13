@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Registro Profesor</title>
+	<title>Editar Profesor</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="../css/stars.css">
@@ -41,16 +41,12 @@
 	<div class="container-fluid ">
 		<div class="panel">
 			
-			<h2>Nuevo Profesor</h2>
+			<h2>Editar Profesor</h2>
 			<article class="row">
 				<form  name="formulario" class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
 
 
 					<fieldset>
-						<div id="legend">
-							<br>
-							<legend><b>Ingresa los siguientes datos:</b></legend>
-						</div>
 
 						<?php if(!empty($errores)): ?>
 							<div class="error">
@@ -66,7 +62,6 @@
 							
 							<div class="controls"><!--salto de linea-->
 								<input type="text" id="documento" name="documento" placeholder="" class="input-xlarge">
-								<p class="help-block">Por favor escribe el documento del profesor</p>
 							</div>
 						</div>
 
@@ -76,7 +71,6 @@
 							
 							<div class="controls"><!--salto de linea-->
 								<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
-								<p class="help-block">Por favor escribe el nombre del profesor</p>
 							</div>
 						</div>
 
@@ -86,17 +80,16 @@
 							
 							<div class="controls"><!--salto de linea-->
 								<input type="email" id="correo" name="correo" placeholder="" class="input-xlarge">
-								<p class="help-block">Por favor escribe el correo del profesor</p>
 							</div>
 						</div>
 
 						<!--Clave-->
 						<div class="control-group">
-							<label class="control-label"><h3>Clave</h3></label>
+							<label class="control-label"><h3>Nueva clave</h3></label>
 							
 							<div class="controls"><!--salto de linea-->
+								<p class="help-block">Si desea cambiar la clave escriba aqu&iacute; la nueva clave, de lo contrario deje este campo</p>
 								<input type="password" id="clave" name="clave" placeholder="" class="input-xlarge">
-								<p class="help-block">Por favor escribe la clave del profesor</p>
 							</div>
 						</div>
 
@@ -104,7 +97,7 @@
 						<div class = "container-fluid text-center">
 							<!-- Button -->
 						    <div class="controls">
-						    	<button class="btn btn-success">Crear</button>
+						    	<button class="btn btn-success">Editar</button>
 						    </div>
 						</div>							
 					</fieldset>

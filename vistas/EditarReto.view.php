@@ -69,11 +69,7 @@
 			<article class="row">
 				<form class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
 					<fieldset>
-						<!--<div id="legend">
-							<br>
-							<legend><b>Ingresa los siguientes datos:</b></legend>
-						</div>-->
-
+					
 						<?php if(!empty($errores)): ?>
 							<div class="error">
 								<ul>

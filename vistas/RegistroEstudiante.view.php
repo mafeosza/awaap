@@ -2,82 +2,116 @@
 <html>
 <head>
 	<title>Registro Estudiante</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<!--iconos-->
-	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="../css/stars.css">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
+  		.row{
+  			margin-left: 3%;
+  			margin-right: 3%;
+  			border: 2px solid #DDD7D5;
+  			background-color: #FAF8F7;
+  		}
+  		.panel{
+  			margin-left: 3%;
+  			margin-bottom: 0%;
+  		}
+  		.control-group, #legend{
+  			margin-left: 3%;
+  		}
+  		input{
+  			width: 80%;
+  			height: 35px;
+  		}
+  		textarea{
+  			width: 80%;
+  		}
+  	</style>
 
 </head>
 
 <body>
-
-<div class="container">
-	<div class="container text-center">
-		<h1>Bienvenido</h1>
-  		<h2>Registro estudiante</h2>
+	<div class="container-fluid text-center">
+		<h1>AWA<sup>2</sup>P</h1>	
+		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
 	</div>
-</div>
-<div class="container-fluid ">
-	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" name="formulario" class="form-horizontal">
-		<fieldset>
-			<div id="legend">
-				<legend >Ingresa los siguientes datos:</legend>
-			</div>
+	<div class="container-fluid ">
+		<div class="panel">
+			
+			<h2>Nuevo Estudiante</h2>
+			<article class="row">
+				<form  name="formulario" class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
 
-			<div class="control-group">
-				<!--Nombre-->
-				<label class="control-label">Nombre</label>
-				
-				<div class="controls"><!--salto de linea-->
-					<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
-					<p class="help-block">Por favor escribe tu nombre completo</p>
-				</div>
-			</div>
 
-			<div class="control-group">
-				<!--E-mail-->
-				<label class="control-label">E-mail</label>
-				<div class="controls">
-					<input type="text" id="email" name="email" placeholder="" class="input-xlarge">
-					<p class="help-block">Por favor escribe tu correo electr&oacute;nico</p>
-				</div>
-			</div>
+					<fieldset>
+						<div id="legend">
+							<br>
+							<legend><b>Ingresa los siguientes datos:</b></legend>
+						</div>
 
-			<div class="control-group">
-				<!--Documento-->
-				<label class="control-label">Documento</label>
-				
-				<div class="controls"><!--salto de linea con css-->
-					<input type="text" id="nombre" name="documento" placeholder="" class="input-xlarge">
-					<p class="help-block">Por favor escribe tu n&uacute;mero de identificaci&oacute;n</p>
-				</div>
-			</div>
+						<?php if(!empty($errores)): ?>
+							<div class="error">
+								<ul>
+									<?php echo $errores;?>
+								</ul>
+							</div>
+						<?php endif; ?>
 
-			 <div class="control-group">
-		      <!-- Password-->
-		      <label class="control-label">Clave</label>
-		      <div class="controls">
-		        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-		        <p class="help-block">La clave debe contener al menos 4 caracteres</p>
-		      </div>
-		    </div>
+						<!--Documento-->
+						<div class="control-group">
+							<label class="control-label"><h3>Documento</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<input type="text" id="documento" name="documento" placeholder="" class="input-xlarge">
+								<p class="help-block">Por favor escribe el documento del estudiante</p>
+							</div>
+						</div>
 
-		    <div class="control-group">
-		      <!-- Button -->
-		      <div class="controls">
-		        <button class="btn btn-success">Registrarse</button>
-		      </div>
-		    </div>
-		</fieldset>
+						<!--Nombre-->
+						<div class="control-group">
+							<label class="control-label"><h3>Nombre</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
+								<p class="help-block">Por favor escribe el nombre del estudiante</p>
+							</div>
+						</div>
 
-		<?php if(!empty($errores)): ?>
-			<div class="error">
-				<ul>
-					<?php echo $errores;?>
-				</ul>
-			</div>
-		<?php endif; ?>
+						<!--Correo-->
+						<div class="control-group">
+							<label class="control-label"><h3>Correo</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<input type="email" id="correo" name="correo" placeholder="" class="input-xlarge">
+								<p class="help-block">Por favor escribe el correo del estudiante</p>
+							</div>
+						</div>
 
-	</form>
-</div>
+						<!--Clave-->
+						<div class="control-group">
+							<label class="control-label"><h3>Clave</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<input type="password" id="clave" name="clave" placeholder="" class="input-xlarge">
+								<p class="help-block">Por favor escribe la clave del estudiante</p>
+							</div>
+						</div>
+
+						<br>
+						<div class = "container-fluid text-center">
+							<!-- Button -->
+						    <div class="controls">
+						    	<button class="btn btn-success">Crear</button>
+						    </div>
+						</div>							
+					</fieldset>
+					<br>
+				</form>
+			</article>
+		</div>
+	</div>
 </body>
 </html>
