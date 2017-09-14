@@ -23,12 +23,13 @@
   			margin-left: 3%;
   		}
   		input{
-  			width: 80%;
+  			width: 40%;
   			height: 35px;
   		}
   	</style>
 </head>
 <body>
+	<?php require "../vistas/vistasFijas/barraHorizontal.view.php"; ?>
 	<div class="container-fluid ">
 		<div class="panel">
 			
@@ -50,7 +51,7 @@
 							<label class="control-label"><h3>Nombre</h3></label>
 							
 							<div class="controls"><!--salto de linea-->
-								<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
+								<input type="text" id="nombre" name="nombre" value="<?php echo $informacionEspacio['nombre']?>" class="input-xlarge">
 							</div>
 						</div>	
 
@@ -62,7 +63,17 @@
 									<option value="Seleccione" selected="selected">Seleccione</option>
 									<?php for ($i=1; $i <=10; $i++): ?>
 										
-										<option value="semestre-<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
+										<?php if($informacionEspacio['semestre'] == $i)
+												{
+											?>
+													<option value="<?php echo $i; ?>" selected="selected">Semestre-<?php echo $i; ?></option>
+										<?php
+												}else{
+										?>
+													<option value="<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
+										<?php
+												}
+										?>
 									<?php endfor; ?>
 								</select>
 							</div>

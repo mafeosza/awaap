@@ -66,15 +66,39 @@
 			});
   		})
   	</script>
+  	<script>
+		$(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip();   
+		});
+	</script>
 </head>
 <body>
-	<div style="text-align: right;">
-		<a href="../controladores/Cerrar.php"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesi&oacute;n</a>
-	</div>
-	<div class="container-fluid text-center">
-		<h1>AWA<sup>2</sup>P</h1>	
-		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
-	</div>	
+	<!--navegador horizontal-->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+	      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	     		</button>
+	    	</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<div class="row">
+					<div class="col-sm-6 container-fluid text-center" style="color: white; margin-left: 25%;">
+						<h1>AWA<sup>2</sup>P</h1>	
+						<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
+					</div>
+					<div class="col-sm-3" style="margin-top: 1.5%;">
+						<ul class="nav navbar-nav navbar-right">
+			       			<li><a href="../controladores/Cerrar.php"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesi&oacute;n</a></li>
+			      		</ul>	
+					</div>
+				</div>
+	      	</div>
+		</div>
+	</nav>
+
 	<!--Navegador vertical-->
 	<div class="container">
 	    <div class="row">
@@ -190,7 +214,7 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="estudiantes" style="display: none;">
@@ -214,7 +238,7 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="../controladores/AdministradorControlador.php?a=registrarEstudiante"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=registrarEstudiante"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="profesores" style="display: none;">
@@ -238,7 +262,7 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="../controladores/AdministradorControlador.php?a=registrarProfesor"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=registrarProfesor"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="grupos" style="display: none;">
@@ -263,7 +287,7 @@
 	        		</div>
 	        	<?php endif; ?>
 	        	<div style="text-align: right;">
-	        		<a href="../controladores/AdministradorControlador.php?a=crearGrupo"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearGrupo"><img id="iconMas" src="../imagenes/plus.png"></a>
 	        	</div>
 	        </div>
 	    </div>

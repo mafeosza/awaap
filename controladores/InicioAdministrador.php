@@ -29,7 +29,7 @@
 				$tablaEspaciosAcademicos.= '<tr><td>'.$informacionEspacio['id'].'</td>
 												<td>'.$informacionEspacio['nombre'].'</td>
 												<td style="text-align: center;">'.$informacionEspacio['semestre'].'</td>
-												<td style="text-align:center"><a href="../controladores/AdministradorControlador.php?a=editarEspacio&id='.$informacionEspacio['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="../controladores/AdministradorControlador.php?a=eliminarEspacio&id='.$informacionEspacio['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+												<td style="text-align:center"><a data-toggle="tooltip" title="Editar" href="../controladores/AdministradorControlador.php?a=editarEspacio&id='.$informacionEspacio['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a data-toggle="tooltip" title="Eliminar" href="../controladores/AdministradorControlador.php?a=eliminarEspacio&id='.$informacionEspacio['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}
@@ -42,7 +42,7 @@
 												<td>'.$informacionEstudiante['documento'].'</td>
 												<td>'.$informacionEstudiante['nombre'].'</td>
 												<td>'.$informacionEstudiante['correo'].'</td>
-												<td style="text-align: center;"><a href="../controladores/AdministradorControlador.php?a=editarEstudiante&id='.$informacionEstudiante['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="../controladores/AdministradorControlador.php?a=eliminarEstudiante&id='.$informacionEstudiante['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+												<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/AdministradorControlador.php?a=editarEstudiante&id='.$informacionEstudiante['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a data-toggle="tooltip" title="Eliminar" href="../controladores/AdministradorControlador.php?a=eliminarEstudiante&id='.$informacionEstudiante['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}
@@ -55,7 +55,7 @@
 												<td>'.$informacionProfesores['documento'].'</td>
 												<td>'.$informacionProfesores['nombre'].'</td>
 												<td>'.$informacionProfesores['correo'].'</td>
-												<td style="text-align: center;"><a href="../controladores/AdministradorControlador.php?a=editarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="../controladores/AdministradorControlador.php?a=eliminarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+												<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/AdministradorControlador.php?a=editarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-pencil" aria-hidden="true"></i></a> <a data-toggle="tooltip" title="Eliminar" href="../controladores/AdministradorControlador.php?a=eliminarProfesor&id='.$informacionProfesores['id'].'"> <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}
@@ -69,7 +69,7 @@
 												<td>'.$informacionGrupos['franja'].'</td>
 												<td>'.$informacionGrupos['nombreProfesor'].'</td>
 												<td>'.$informacionGrupos['nombreEspacio'].'</td>
-												<td style="text-align: center;"><a href="../controladores/AdministradorControlador.php?a=editarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a href="../controladores/AdministradorControlador.php?a=eliminarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#adduser"><i class="fa fa-user-plus" aria-hidden="true"></i></a></td>
+												<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/AdministradorControlador.php?a=editarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/AdministradorControlador.php?a=eliminarGrupo&id='.$informacionGrupos['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Agregar Estudiantes" href="#adduser"><i class="fa fa-user-plus" aria-hidden="true"></i></a></td>
 											</tr>';
 			}
 		}

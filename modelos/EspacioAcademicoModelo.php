@@ -29,11 +29,44 @@
 		}
 
 		/**
+		*Método que crea un espacio academico
+		*/
+		public function crearEspacioAcademico($nombre, $semestre)
+		{
+			$sql = "INSERT INTO `EspacioAcademico` (`nombre`, `semestre`) VALUES ('$nombre', '$semestre')";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que modifica un espacio académico
+		*/
+		public function modificarEspacioAcademico($id, $nombre, $semestre)
+		{
+			$sql="UPDATE `EspacioAcademico` SET `nombre` = '$nombre', `semestre` = '$semestre'
+			WHERE `EspacioAcademico`.id = '$id'";
+			#print_r($sql);
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que brinda la información de un espacio académico
+		*/
+		public function informacionEspacioAcademico($id)
+		{
+			$sql="SELECT * FROM `EspacioAcademico` WHERE `id` = $id";
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetch();
+			return $datos;
+		}
+
+		/**
 		*Método que lista los espacios academicos
 		*/
 		public function listarEspaciosAcademicos()
 		{
-			$sql = "SELECT * FROM `EspacioAcademico`";
+			$sql = "SELECT * FROM `EspacioAcademico` ORDER BY `semestre`";
 			$consulta = $this->query($sql);
 
 			$datos = array();

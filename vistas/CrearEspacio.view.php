@@ -8,6 +8,7 @@
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 	<style type="text/css">
   		.crear{
   			margin-left: 3%;
@@ -23,7 +24,7 @@
   			margin-left: 3%;
   		}
   		input{
-  			width: 80%;
+  			width: 40%;
   			height: 35px;
   		}
   		textarea{
@@ -32,6 +33,7 @@
   	</style>
 </head>
 <body>
+	<?php require "../vistas/vistasFijas/barraHorizontal.view.php"; ?>
 	<div class="container-fluid ">
 		<div class="panel">
 			
@@ -67,10 +69,10 @@
 							<label for= "semestre" class="control-label"><h3>Semestre</h3></label>
 							<div class="controls"><!--salto de linea-->
 								<select id="semestre" name="semestre">
-									<option value="Seleccione" selected="selected">Seleccione</option>
+									<option value="" selected="selected">Seleccione</option>
 									<?php for ($i=1; $i <=10; $i++): ?>
 										
-										<option value="semestre-<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
+										<option value="<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
 									<?php endfor; ?>
 								</select>
 								<p class="help-block">Por favor seleccione el semestre al que pertenece el espacio acad&eacute;mico</p>

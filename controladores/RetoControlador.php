@@ -8,7 +8,8 @@
 	*/
 	if (isset($_SESSION['documento'])) {
 
-		function nuevo(){
+		function nuevo()
+		{
 			$grupo = new GrupoModelo();
 			$reto = new RetoModelo();
 
@@ -39,8 +40,6 @@
 					$solucionJava = $_POST['solucionJava'];
 					$solucionPython = $_POST['solucionPython'];
 					$tema = $_POST['tema'];
-
-	#echo $nivelDificultad;
 
 					if(empty($titulo) or empty($descripcionCorta) or empty($especificaciones) or empty($nivelDificultad) or empty($tema))
 					{
@@ -96,7 +95,8 @@
 
 		}//end nuevo
 
-		function editar(){
+		function editar()
+		{
 			$grupo = new GrupoModelo();
 			$reto = new RetoModelo();
 
@@ -175,7 +175,8 @@
 		}//end editar
 
 		//Método que elimina un reto dado su id
-		function borrar(){
+		function borrar()
+		{
 
 			/**
 			*$id id del tema
