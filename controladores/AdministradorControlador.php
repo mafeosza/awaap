@@ -4,6 +4,7 @@
 	require "../modelos/EstudianteModelo.php";
 	require "../modelos/ProfesorModelo.php";
 	require "../modelos/GrupoModelo.php";
+	require "../modelos/RegistroModelo.php";
 
 	/**
 	*Determinar si la sesión está definida 
@@ -95,7 +96,7 @@
 			$estudiante = new EstudianteModelo();
 
 
-			//id del espacio academico, valor numerico valido
+			//id del estudiante, valor numerico valido
 			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
 			$informacionEstudiante = $estudiante->informacionEstudiante($id);
@@ -192,7 +193,7 @@
 					header('Location: ../controladores/InicioAdministrador.php');
 				}
 			}
-			require "../vistas/RegistroEstudiante.view.php";
+			require "../vistas/CrearEstudiante.view.php";
 		}
 
 		//////////////////////////////////////////////
@@ -203,7 +204,7 @@
 		{
 			$profesor = new ProfesorModelo();
 
-			//id del espacio academico, valor numerico valido
+			//id del profesor, valor numerico valido
 			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
 			$informacionProfesor = $profesor->informacionProfesor($id);
@@ -298,7 +299,7 @@
 				}
 			}
 
-			require "../vistas/RegistroProfesor.view.php";
+			require "../vistas/CrearProfesor.view.php";
 		}
 
 		//////////////////////////////////////////////
@@ -311,7 +312,7 @@
 			$espacioAcademico = new EspacioAcademicoModelo();
 			$profesor = new ProfesorModelo();
 
-			//id del espacio academico, valor numerico valido
+			//id del grupo, valor numerico valido
 			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
 			$informacionGrupo = $grupo->informacionGrupo($id);
@@ -387,8 +388,45 @@
 		}
 
 		function agregarEstudianteGrupo()
-		{
+		{	
+			$grupo = new GrupoModelo();
+
+			//id del grupo, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;			
+			$tablaEstudiantes = "";
+			$estudiantes = $grupo->listarEstudiantes($id);
+			if(!empty($estudiantes)){
+				foreach ($estudiantes as $informacionEstudiante) {
+					$tablaEstudiantes.= '<tr><td>'.$informacionEstudiante['id'].'</td>
+													<td>'.$informacionEstudiante['documento'].'</td>
+													<td>'.$informacionEstudiante['nombre'].'</td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Retirar del grupo" href="../controladores/AdministradorControlador.php?a=eliminarRegistroEstudiante&id='.$informacionEstudiante['id'].'&g='.$id.'"> <i class="fa fa-times" aria-hidden="true"></i></a></td>
+												</tr>';
+				}
+			}
 			require "../vistas/AgregarEstudianteGrupo.view.php";
+		}
+
+		function eliminarRegistroEstudiante()
+		{	
+			$registro = new RegistroModelo();
+
+			//id del estudiante, valor numerico valido
+			$idEstudiante = isset($_GET['id']) ? (int)$_GET['id'] : false;
+			//id del grupo, valor numerico valido
+			$idGrupo = isset($_GET['g']) ? (int)$_GET['g'] : false;
+
+			$idRegistro = $registro->idRegistro($idGrupo, $idEstudiante);
+			$idProfesor = $registro->idProfesor($idRegistro);
+			#echo $idRegistro."-".$idGrupo."-".$idProfesor."-".$idEstudiante;
+			#die();
+
+			//se realiza la eliminación del registro del estudiante
+			$registro->eliminarRegistro($idRegistro, $idGrupo, $idProfesor, $idEstudiante);
+
+			header('Location: ../controladores/AdministradorControlador.php?a=agregarEstudianteGrupo&id='.$idGrupo);
+
+			#falta mensaje
 		}
 
 		/*

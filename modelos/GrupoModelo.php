@@ -20,7 +20,7 @@
 		private $franja;
 
 		/**
-		*Constructor de la clase Profesor
+		*Constructor de la clase Grupo
 		*/
 		public function GruporModelo()
 		{
@@ -62,11 +62,27 @@
 		}
 
 		/**
-		*Método que retorna los grupos con el nombre del profesor y el espacio académico
+		*Método que retorna los estudiantes en un grupo dado su id
+		*/
+		public function listarEstudiantes($id)
+		{
+			$sql = "SELECT a.id, a.documento as documento, a.nombre as nombre FROM `Estudiante` a, `Grupo` b, `Registro` c 
+			WHERE a.id = c.Estudiante_id AND b.id = c.Grupo_id AND b.id = $id";
+			$consulta = $this->query($sql);
+			#print_r($sql);
+
+			$datos = array();
+			$datos = $consulta->fetchAll();
+			return $datos;
+		}
+
+		/**
+		*Método que retorna los grupos en la bd con el profesor y el espacio académico
 		*/
 		public function listarGrupos()
 		{
-			$sql = "SELECT a.id, a.numero, a.franja, b.nombre as nombreProfesor, c.nombre as nombreEspacio FROM `Grupo` a, `Profesor` b, `EspacioAcademico` c WHERE b.id = a.Profesor_id AND c.id = EspacioAcademico_id";
+			$sql = "SELECT a.id, a.numero, a.franja, b.nombre as nombreProfesor, c.nombre as nombreEspacio FROM `Grupo` a, `Profesor` b, `EspacioAcademico` c 
+			WHERE b.id = a.Profesor_id AND c.id = EspacioAcademico_id";
 			$consulta = $this->query($sql);
 			$resultado = $consulta->fetchAll();
 

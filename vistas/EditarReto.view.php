@@ -107,10 +107,25 @@
 
 						<!--Nivel Dificultad-->
 						<div class="control-group">
-							<label class="control-label"><h3>Nivel Dificultad</h3></label>
-							
+							<label for= "nivelDificultad" class="control-label"><h3>Nivel Dificultad</h3></label>
 							<div class="controls"><!--salto de linea-->
-								<input type="text" id="nivelDificultad" name="nivelDificultad" value="<?php echo $infoReto[0]['nivelDificultad']; ?>" class="input-xlarge">
+								<select id="nivelDificultad" name="nivelDificultad">
+									<option value="Seleccione" selected="selected">Seleccione</option>
+									<?php for ($i=1; $i <=5; $i++): ?>
+											
+										<?php if($infoReto[0]['nivelDificultad'] == $i)
+											{
+										?>
+												<option value="<?php echo $i; ?>" selected="selected">Nivel-<?php echo $i; ?></option>
+										<?php
+											}else{
+										?>
+												<option value="<?php echo $i; ?>">Nivel-<?php echo $i; ?></option>
+										<?php
+											}
+										?>
+									<?php endfor; ?>
+								</select>
 							</div>
 							<p class="help-block">La dificultad en la que se clasifica este reto, siendo 5 el nivel m&aacute;s complejo y el valor m&aacute;ximo que puede tener</p>
 						</div>

@@ -29,10 +29,6 @@
 			height: 5%;
   			width: 5%;
 		}
-		#iconEditar, #iconEliminar{
-			height: 5%;
-  			width: 3%;	
-		}
   	</style>
   	<script>
   		$(document).on('ready', function(){
@@ -157,11 +153,6 @@
 	                                <tr>
 	                                    <td>
 	                                        <a href="#retos">Retos</a>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <a href="#gruposPorProfesor">Grupos Profesor</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
