@@ -30,6 +30,38 @@
 		}
 
 		/**
+		*Método que crea un grupo
+		*/
+		public function crearGrupo($numero, $franja, $espacioAcademico, $profesor)
+		{
+			$sql = "INSERT INTO `Grupo` (`numero`, `franja`, `Profesor_id`, `EspacioAcademico_id`) VALUES ('$numero', '$franja', '$profesor', '$espacioAcademico')";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que modifica un grupo 
+		*/
+		public function modificarGrupo($id, $espacioAcademicoBD, $profesorBD, $numero, $franja, $espacioAcademico, $profesor)
+		{
+			$sql="UPDATE `Grupo` SET `numero` = '$numero', `franja` = '$franja', `EspacioAcademico_id` = '$espacioAcademico', `Profesor_id` = '$profesor' 
+			WHERE `Grupo`.`id` = '$id' AND `Grupo`.`Profesor_id` = '$profesorBD' AND `Grupo`.`EspacioAcademico_id` = '$espacioAcademicoBD'";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que brinda la información de un grupo
+		*/
+		public function informacionGrupo($id)
+		{
+			$sql="SELECT * FROM `Grupo` WHERE `id` = $id";
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetch();
+			return $datos;
+		}
+
+		/**
 		*Método que retorna los grupos con el nombre del profesor y el espacio académico
 		*/
 		public function listarGrupos()

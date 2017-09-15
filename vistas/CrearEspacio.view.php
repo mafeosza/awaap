@@ -16,6 +16,10 @@
   			border: 2px solid #DDD7D5;
   			background-color: #FAF8F7;
   		}
+  		.fila{
+  			margin-left: 3%;
+  			margin-right: 3%;
+  		}
   		.panel{
   			margin-left: 3%;
   			margin-bottom: 0%;
@@ -39,7 +43,7 @@
 			
 			<h2>Nuevo Espacio Acad&eacute;mico</h2>
 			<article class="crear">
-				<form  name="formulario" class = "form-horizontal" method="POST" action="">
+				<form  name="formulario" method="POST" action="">
 					<fieldset>
 						<div id="legend">
 							<br>
@@ -53,38 +57,41 @@
 								</ul>
 							</div>
 						<?php endif; ?>
-
-						<!--Nombre-->
-						<div class="control-group">
-							<label class="control-label"><h3>Nombre</h3></label>
-							
-							<div class="controls"><!--salto de linea-->
-								<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
-								<p class="help-block">Por favor escribe el nombre del espacio acad&eacute;mico</p>
+						<div class="row fila">
+							<div class="col-sm-6">
+								<!--Nombre-->
+								<div class="control-group">
+									<label class="control-label"><h3>Nombre</h3></label>
+									
+									<div class="controls"><!--salto de linea-->
+										<input type="text" id="nombre" name="nombre" placeholder="" class="input-xlarge">
+										<p class="help-block">Por favor escribe el nombre del espacio acad&eacute;mico</p>
+									</div>
+								</div>	
 							</div>
-						</div>	
-
-						<!--Semestre-->
-						<div class="control-group">
-							<label for= "semestre" class="control-label"><h3>Semestre</h3></label>
-							<div class="controls"><!--salto de linea-->
-								<select id="semestre" name="semestre">
-									<option value="" selected="selected">Seleccione</option>
-									<?php for ($i=1; $i <=10; $i++): ?>
-										
-										<option value="<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
-									<?php endfor; ?>
-								</select>
-								<p class="help-block">Por favor seleccione el semestre al que pertenece el espacio acad&eacute;mico</p>
+							<div class="col-sm-6">
+								<!--Semestre-->
+								<div class="control-group">
+									<label for= "semestre" class="control-label"><h3>Semestre</h3></label>
+									<div class="controls"><!--salto de linea-->
+										<select id="semestre" name="semestre">
+											<option value="" selected="selected">Seleccione</option>
+											<?php for ($i=1; $i <=10; $i++): ?>
+												
+												<option value="<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
+											<?php endfor; ?>
+										</select>
+										<p class="help-block">Por favor seleccione el semestre al que pertenece el espacio acad&eacute;mico</p>
+									</div>
+								</div>
 							</div>
 						</div>
-
+							<br>
 						<div class = "container-fluid text-center">
 							<!-- Button -->
 						    <div class="controls">
 						    	<button class="btn btn-success">Crear</button>
-						    </div>
-						    
+						    </div> 
 						</div>														
 					</fieldset>
 					<br>

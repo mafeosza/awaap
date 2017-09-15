@@ -306,7 +306,45 @@
 		//////////////////////////////////////////////
 
 		function editarGrupo()
-		{
+		{	
+			$grupo = new GrupoModelo();
+			$espacioAcademico = new EspacioAcademicoModelo();
+			$profesor = new ProfesorModelo();
+
+			//id del espacio academico, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$informacionGrupo = $grupo->informacionGrupo($id);
+			$espacios = $espacioAcademico->listarEspaciosAcademicos();
+			$profesores = $profesor->listarProfesores();
+			$espacioAcademicoBD = $informacionGrupo['EspacioAcademico_id'];
+			$profesorBD = $informacionGrupo['Profesor_id'];
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				
+				//variable que contendra los errores del usuario
+				$errores='';
+				//Se guardan los datos ingresados por el usuario en variables
+				$numero = filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
+				$franja = $_POST['franja'];
+				$espacioAcademicoSelec = $_POST['espacioAcademico'];
+				$profesorSelec = $_POST['profesor'];
+
+				if (empty($numero) or empty($franja) or empty($espacioAcademicoSelec) or empty($profesorSelec)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}
+				if (empty($errores)) {
+
+					//modificar grupo
+					$grupo->modificarGrupo($id, $espacioAcademicoBD, $profesorBD, $numero, $franja, $espacioAcademicoSelec, $profesorSelec);
+					header('Location: ../controladores/InicioAdministrador.php');
+				}
+			}
+
 			require "../vistas/EditarGrupo.view.php";
 		}
 
@@ -316,7 +354,35 @@
 		}
 
 		function crearGrupo()
-		{
+		{	
+			$grupo = new GrupoModelo();
+			$espacioAcademico = new EspacioAcademicoModelo();
+			$profesor = new ProfesorModelo();
+
+			$espacios = $espacioAcademico->listarEspaciosAcademicos();
+			$profesores = $profesor->listarProfesores();
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				//variable que contendra los errores del usuario
+				$errores='';
+				//Se guardan los datos ingresados por el usuario en variables
+				$numero = filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
+				$franja = $_POST['franja'];
+				$espacioAcademicoSelec = $_POST['espacioAcademico'];
+				$profesorSelec = $_POST['profesor'];
+
+				if (empty($numero) or empty($franja) or empty($espacioAcademicoSelec) or empty($profesorSelec)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}
+				if (empty($errores)) {
+					$grupo->crearGrupo($numero, $franja, $espacioAcademicoSelec, $profesorSelec);
+					header('Location: ../controladores/InicioAdministrador.php');
+				}
+			}
 			require "../vistas/CrearGrupo.view.php";
 		}
 
