@@ -34,6 +34,24 @@
 		}
 
 		/**
+		*Método que agrega un registro
+		*/
+		function agregarRegistro($idGrupo, $idProfesor, $idEstudiante)
+		{
+			$sql = "INSERT INTO `Registro` (`Grupo_id`, `Grupo_Profesor_id`, `Estudiante_id`) VALUES ('$idGrupo', '$idProfesor', '$idEstudiante')";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que elimina un registro
+		*/
+		function eliminarRegistro($idRegistro, $idGrupo, $idProfesor, $idEstudiante)
+		{
+			$sql= "DELETE FROM `Registro` WHERE `Registro`.`id` = $idRegistro AND `Registro`.`Grupo_id` = $idGrupo AND `Registro`.`Grupo_Profesor_id` = $idProfesor AND `Registro`.`Estudiante_id` = $idEstudiante";
+			$consulta = $this->query($sql);
+		}
+
+		/**
 		*Método que retorna el id de un registro dado el grupo y el estudiante
 		*/
 		function idRegistro($idGrupo, $idEstudiante)
@@ -62,15 +80,6 @@
 			$id = $datos[0];
 
 			return $id;	
-		}
-
-		/**
-		*Método que elimina un registro
-		*/
-		function eliminarRegistro($idRegistro, $idGrupo, $idProfesor, $idEstudiante)
-		{
-			$sql= "DELETE FROM `Registro` WHERE `Registro`.`id` = $idRegistro AND `Registro`.`Grupo_id` = $idGrupo AND `Registro`.`Grupo_Profesor_id` = $idProfesor AND `Registro`.`Estudiante_id` = $idEstudiante";
-			$consulta = $this->query($sql);
 		}
 	}
 ?>

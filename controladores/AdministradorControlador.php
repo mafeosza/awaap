@@ -301,6 +301,41 @@
 
 			require "../vistas/CrearProfesor.view.php";
 		}
+		//////////////////////////////////////////////
+		//		       Métodos Retos		  		//
+		//////////////////////////////////////////////
+		function verRetos()
+		{
+			$profesor = new ProfesorModelo();
+
+			$profesores = $profesor->listarProfesores();
+
+			$esSeleccionProfesor = false;
+
+			$profesoresOpcion = "";
+			foreach ($profesores as $informacionProfesor) {
+				$profesoresOpcion.= '<option value="'.$informacionProfesor['id'].'">'.$informacionProfesor['nombre'].'</option>';
+			}
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				
+				$esSeleccionProfesor = true;
+
+				//variable que contendra los errores del usuario
+				$errores='';
+				//Se guardan los datos ingresados por el usuario en variables
+				$idProfesor = $_POST['chosen-unique'];
+
+				$informacionProfesor = $profesor->informacionProfesor($idProfesor);
+				$nombreProfesor = $informacionProfesor['nombre'];
+			}
+
+			require "../vistas/RetosPorProfesor.view.php"; 
+		}
 
 		//////////////////////////////////////////////
 		//		       Métodos Grupo		  		//
@@ -390,20 +425,54 @@
 		function agregarEstudianteGrupo()
 		{	
 			$grupo = new GrupoModelo();
+			$registro = new RegistroModelo();
 
 			//id del grupo, valor numerico valido
-			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;			
+			$idGrupo = isset($_GET['id']) ? (int)$_GET['id'] : false;	
+			$informacionGrupo = $grupo->informacionGrupo($idGrupo);
+
+			$informacionDetallesGrupo = $grupo->informacionDetallesGrupo($idGrupo);
+
+			$detalles = $informacionDetallesGrupo['nombreEspacio'].' '.$informacionDetallesGrupo['numero'].'-'.$informacionDetallesGrupo['franja'].' con: '.$informacionDetallesGrupo['nombreProfesor'];
+
 			$tablaEstudiantes = "";
-			$estudiantes = $grupo->listarEstudiantes($id);
+			$estudiantes = $grupo->listarEstudiantes($idGrupo);
 			if(!empty($estudiantes)){
 				foreach ($estudiantes as $informacionEstudiante) {
 					$tablaEstudiantes.= '<tr><td>'.$informacionEstudiante['id'].'</td>
 													<td>'.$informacionEstudiante['documento'].'</td>
 													<td>'.$informacionEstudiante['nombre'].'</td>
-													<td style="text-align: center;"><a data-toggle="tooltip" title="Retirar del grupo" href="../controladores/AdministradorControlador.php?a=eliminarRegistroEstudiante&id='.$informacionEstudiante['id'].'&g='.$id.'"> <i class="fa fa-times" aria-hidden="true"></i></a></td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Retirar del grupo" href="../controladores/AdministradorControlador.php?a=eliminarRegistroEstudiante&id='.$informacionEstudiante['id'].'&g='.$idGrupo.'"> <i class="fa fa-times" aria-hidden="true"></i></a></td>
 												</tr>';
 				}
 			}
+
+			$estudiantesOpcion = "";
+			$otrosEstudiantes = $grupo->listarOtrosEstudiantes($idGrupo);
+			if (!empty($otrosEstudiantes)) {
+				foreach ($otrosEstudiantes as $estudiante) {
+					$estudiantesOpcion.='<option value="'.$estudiante['id'].'">'.$estudiante['nombre'].'</option>';
+				}
+			}
+
+			$idProfesor = $informacionGrupo['Profesor_id'];
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				//variable que contendra los errores del usuario
+				$errores='';
+				//Se guardan los datos ingresados por el usuario en variables
+				$ids = $_POST['chosen-multiple'];
+				if (empty($ids)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}else{
+					foreach ($ids as $idEstudiante) {
+						$registro->agregarRegistro($idGrupo, $idProfesor, $idEstudiante);
+						header('Location: ../controladores/AdministradorControlador.php?a=agregarEstudianteGrupo&id='.$idGrupo);
+
+						#falta mensaje confirmacion o error
+					}
+				}
+			}
+
 			require "../vistas/AgregarEstudianteGrupo.view.php";
 		}
 

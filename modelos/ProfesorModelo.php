@@ -163,7 +163,18 @@
 			return $datos;
 		}
 
-		
+		/**
+		*Método que retorna los retos de un profesor
+		*/
+		function retosProfesor($id){
+			$sql = "";
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetchAll();
+
+			return $datos;
+		}
 	}
 
 ?>

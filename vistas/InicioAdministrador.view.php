@@ -152,7 +152,7 @@
 	                            <table class="table">
 	                                <tr>
 	                                    <td>
-	                                        <a href="#retos">Retos</a>
+	                                        <a href="../controladores/AdministradorControlador.php?a=verRetos">Retos</a>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -181,7 +181,7 @@
 	        </div>
 	        <div class="col-sm-9 col-md-9" id="bienvenido">
 	            <div class="well">
-	                <h1>Bienvenido Administrador</h1>
+	                <h1>Administrador</h1>
 	                Panel de control
 	            </div>
 	        </div>

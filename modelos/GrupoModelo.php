@@ -69,8 +69,21 @@
 			$sql = "SELECT a.id, a.documento as documento, a.nombre as nombre FROM `Estudiante` a, `Grupo` b, `Registro` c 
 			WHERE a.id = c.Estudiante_id AND b.id = c.Grupo_id AND b.id = $id";
 			$consulta = $this->query($sql);
-			#print_r($sql);
 
+			$datos = array();
+			$datos = $consulta->fetchAll();
+			return $datos;
+		}
+
+		/**
+		*Método que retorna los estudiantes que NO estan en un determinado grupo
+		*/
+		public function listarOtrosEstudiantes($id)
+		{
+			$sql = "SELECT * FROM Estudiante es WHERE es.documento NOT IN (SELECT a.documento FROM Estudiante a, Grupo b, Registro c 
+			WHERE a.id = c.Estudiante_id AND b.id = c.Grupo_id AND b.id = $id)";
+			$consulta = $this->query($sql);
+			
 			$datos = array();
 			$datos = $consulta->fetchAll();
 			return $datos;
@@ -85,6 +98,19 @@
 			WHERE b.id = a.Profesor_id AND c.id = EspacioAcademico_id";
 			$consulta = $this->query($sql);
 			$resultado = $consulta->fetchAll();
+
+			return $resultado;
+		}
+
+		/**
+		*Método que retorna la información más detallada de un grupo
+		*/
+		public function informacionDetallesGrupo($id)
+		{
+			$sql = "SELECT a.id, a.numero, a.franja, b.nombre as nombreProfesor, c.nombre as nombreEspacio FROM `Grupo` a, `Profesor` b, `EspacioAcademico` c 
+			WHERE b.id = a.Profesor_id AND c.id = EspacioAcademico_id AND a.id = $id";
+			$consulta = $this->query($sql);
+			$resultado = $consulta->fetch();
 
 			return $resultado;
 		}

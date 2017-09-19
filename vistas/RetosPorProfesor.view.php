@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Registrar Estudiante</title>
+	<title>Retos</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="../css/stars.css">
@@ -39,6 +39,10 @@
 			padding: 1em 5%;
 			background: #fff;
 		}
+		#iconMas{
+			height: 5%;
+  			width: 5%;
+		}
 		select {
 		  	width: 90%;
 		}
@@ -54,11 +58,10 @@
 	<link rel="stylesheet" href="../js/chosen_v1.8.2/chosen.css" type="text/css" />
     <script src="../js/chosen_v1.8.2/chosen.jquery.js"></script>
     <script>
-        jQuery(document).ready(function(){
-  
+    	jQuery(document).ready(function(){
 		    jQuery.getScript( "//harvesthq.github.io/chosen/chosen.jquery.js" )
 		        .done(function( script, textStatus ) {
-		            jQuery(".estudiantesAgregar").chosen();
+		            jQuery(".chosen1").chosen();
 		        })
 		        .fail(function( jqxhr, settings, exception ) {
 		             alert("Error");
@@ -73,44 +76,50 @@
 		<div class="container buscador">
 			<div class="col-sm-10">
 				<h3>Seleccione:</h3>
-				<select name="chosen-multiple[]" multiple="multiple" class="estudiantesAgregar" data-placeholder="Elige los estudiantes a agregar" multiple>
-					<?php echo $estudiantesOpcion;?>
+				<select name="chosen-unique" class="chosen1" data-placeholder="Elige un profesor">
+					<option value=""></option>
+					<?php echo $profesoresOpcion;?>
 				</select>
 			</div>
 			<div class="col-sm-2" style="margin-top: 6%;">
 				<!-- Button -->
 				<div class="controls">
-					<button class="btn btn-success">Agregar</button>
+					<button class="btn btn-success">Buscar Retos</button>
 				</div>
 			</div>
 		</div>
 	</form>
-
-	<div class="container-fluid ">
-		<div class="panel">
-			<h3>Grupo: <?php echo $detalles;?></h3>
-			<h4>Estudiantes registrados en el grupo: </h4>
-			<div class="estudiantes" id="estudiantes" style="">
-		       	<table class="table table-bordered">
-		       		<thead>
-		       			<tr>
-		       				<th>ID</th>
-		       				<th>Documento</th>
-							<th>Nombre</th>
-							<th style="text-align: center;">Acci&oacute;n</th>
-		       			</tr>
-		       		</thead>
-		       		<tbody>
-		       			<?php echo $tablaEstudiantes; ?>
-		       		</tbody>
-		       	</table>
-		       	<?php if($tablaEstudiantes==""):?>
-		       		<div style="text-align: center;">
-		       			<h3>No hay estudiantes registrados en este grupo</h3>
-		       		</div>
-		       	<?php endif; ?>
-		    </div>
+	<?php if($esSeleccionProfesor):?>
+		<div class="container-fluid ">
+			<div class="panel">
+				<h2>Retos del profesor: <?php echo $nombreProfesor;?></h2>
+				<div class="retos" id="retos" style="">
+			       	<table class="table table-bordered">
+			       		<thead>
+			       			<tr>
+			       				<th>Espacio acad&eacute;mico</th>
+			       				<th>Tema</th>
+			       				<th>Grupo</th>
+								<th>Titulo</th>
+								<th>Lenguajes</th>
+								<th style="text-align: center;">Acci&oacute;n</th>
+			       			</tr>
+			       		</thead>
+			       		<tbody>
+			       			<?php echo "ey"; ?>
+			       		</tbody>
+			       	</table>
+			       	<?php #if($tablaEstudiantes==""):?>
+			       		<div style="text-align: center;">
+			       			<h3>No hay retos disponibles</h3>
+			       		</div>
+			       	<?php# endif; ?>
+			       	<div style="text-align: right;">
+		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
+		        	</div>
+			    </div>
+			</div>
 		</div>
-	</div>
+	<?php endif;?>
 </body>
 </html>
