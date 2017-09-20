@@ -480,11 +480,12 @@
 			if ($_SERVER['REQUEST_METHOD'] =='POST') {
 				//variable que contendra los errores del usuario
 				$errores='';
-				//Se guardan los datos ingresados por el usuario en variables
-				$ids = $_POST['chosen-multiple'];
+				
 				if (empty($ids)) {
 					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
 				}else{
+					//Se guardan los datos ingresados por el usuario en variables
+					$ids = $_POST['chosen-multiple'];
 					foreach ($ids as $idEstudiante) {
 						$registro->agregarRegistro($idGrupo, $idProfesor, $idEstudiante);
 						header('Location: ../controladores/AdministradorControlador.php?a=agregarEstudianteGrupo&id='.$idGrupo);

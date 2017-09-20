@@ -83,9 +83,12 @@
 					<button class="btn btn-success">Agregar</button>
 				</div>
 			</div>
+			<?php if(!empty($errores)):?>
+				<p><?php echo $errores; ?></p>
+			<?php endif; ?>
 		</div>
 	</form>
-
+	
 	<div class="container-fluid ">
 		<div class="panel">
 			<h3>Grupo: <?php echo $detalles;?></h3>
