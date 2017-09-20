@@ -329,9 +329,30 @@
 				$errores='';
 				//Se guardan los datos ingresados por el usuario en variables
 				$idProfesor = $_POST['chosen-unique'];
+				if (empty($idProfesor)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}else{
+					$informacionProfesor = $profesor->informacionProfesor($idProfesor);
+					$nombreProfesor = $informacionProfesor['nombre'];
 
-				$informacionProfesor = $profesor->informacionProfesor($idProfesor);
-				$nombreProfesor = $informacionProfesor['nombre'];
+					$retosProfesor = $profesor->retosProfesor($idProfesor);
+					$tablaRetos = '';
+					$lenguajes = '';
+					foreach ($retosProfesor as $informacionReto) {
+
+						$lenguajes.= !empty($informacionReto['python']) ? '<li>Python</li>' : '';
+						$lenguajes.= !empty($informacionReto['java']) ? '<li>Java</li>' : '';
+
+						$tablaRetos.= '<tr><td>'.$informacionReto['espacioAcademico'].'</td>
+													<td>'.$informacionReto['nombreTema'].'</td>
+													<td>'.$informacionReto['numero'].'-'.$informacionReto['franja'].'</td>
+													<td>'.$informacionReto['titulo'].'</td>
+													<td>'.$lenguajes.'</td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Retirar del grupo" href="../controladores/AdministradorControlador.php?a=eliminarRegistroEstudiante&id='.'id'.'&g='.'"> <i class="fa fa-times" aria-hidden="true"></i></a></td>
+												</tr>';
+						$lenguajes = '';
+					}
+				}
 			}
 
 			require "../vistas/RetosPorProfesor.view.php"; 

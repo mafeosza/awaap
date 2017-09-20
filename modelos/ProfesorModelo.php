@@ -167,7 +167,13 @@
 		*Método que retorna los retos de un profesor
 		*/
 		function retosProfesor($id){
-			$sql = "";
+			$sql = "SELECT a.id, a.titulo, a.solucionPython as python, a.solucionJava as java, b.id as idTema, b.nombre as nombreTema, c.id as idGrupo, c.numero, c.franja, e.id as idEspacio, e.nombre as espacioAcademico FROM `Reto` a, `Tema` b, `Grupo` c, `Profesor` d, `EspacioAcademico` e
+			WHERE 
+			a.Grupo_id = c.id AND
+			a.Tema_id = b.id AND
+			c.Profesor_id = d.id AND
+			c.EspacioAcademico_id = e.id AND
+			d.id = $id ";
 			$consulta = $this->query($sql);
 
 			$datos = array();

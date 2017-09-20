@@ -87,9 +87,12 @@
 					<button class="btn btn-success">Buscar Retos</button>
 				</div>
 			</div>
+			<?php if(!empty($errores)):?>
+				<p><?php echo $errores; ?></p>
+			<?php endif; ?>
 		</div>
 	</form>
-	<?php if($esSeleccionProfesor):?>
+	<?php if($esSeleccionProfesor and empty($errores)):?>
 		<div class="container-fluid ">
 			<div class="panel">
 				<h2>Retos del profesor: <?php echo $nombreProfesor;?></h2>
@@ -106,14 +109,14 @@
 			       			</tr>
 			       		</thead>
 			       		<tbody>
-			       			<?php echo "ey"; ?>
+			       			<?php echo $tablaRetos; ?>
 			       		</tbody>
 			       	</table>
-			       	<?php #if($tablaEstudiantes==""):?>
+			       	<?php if($tablaRetos==""):?>
 			       		<div style="text-align: center;">
 			       			<h3>No hay retos disponibles</h3>
 			       		</div>
-			       	<?php# endif; ?>
+			       	<?php endif; ?>
 			       	<div style="text-align: right;">
 		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
 		        	</div>
