@@ -348,7 +348,7 @@
 													<td>'.$informacionReto['numero'].'-'.$informacionReto['franja'].'</td>
 													<td>'.$informacionReto['titulo'].'</td>
 													<td>'.$lenguajes.'</td>
-													<td style="text-align: center;"><a data-toggle="tooltip" title="Retirar del grupo" href="../controladores/AdministradorControlador.php?a=eliminarRegistroEstudiante&id='.'id'.'&g='.'"> <i class="fa fa-times" aria-hidden="true"></i></a></td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/RetoControlador.php?a=editar&id='.$informacionReto['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/RetoControlador.php?a=borrar&id='.$informacionReto['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Ver Tests Retos" href=""><i class="fa fa-list-ul" aria-hidden="true"></i></a></td>
 												</tr>';
 						$lenguajes = '';
 					}

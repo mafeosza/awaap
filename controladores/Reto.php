@@ -68,7 +68,7 @@
 
 		$nivelDificultad = $datosReto[0]['nivelDificultad'];
 
-		$tests = $testModelo->informacionTest($idReto);
+		$tests = $testModelo->informacionTests($idReto);
 
 		#lenguaje en que se intentara resolver el reto
 		$lenguajeIntento = "";	

@@ -2,12 +2,14 @@
 	
 	require "../modelos/GrupoModelo.php";
 	require "../modelos/RetoModelo.php";
+	require "../modelos/ProfesorModelo.php";
+	require "../modelos/AdministradorModelo.php";
 
 	/**
 	*Determinar si la sesión está definida 
 	*/
 	if (isset($_SESSION['documento'])) {
-
+		
 		function nuevo()
 		{
 			$grupo = new GrupoModelo();
@@ -97,6 +99,19 @@
 
 		function editar()
 		{
+
+			$profesor = new ProfesorModelo();
+			$administrador = new AdministradorModelo();
+
+			$usuario = '';
+			//se verifica si el documento pertenece a un profesor
+			if ($profesor->verificarProfesor($_SESSION['documento'])) {
+				$usuario = 'profesor';
+			//de lo contrario si el documento pertenece al administrador	
+			}elseif ($administrador->verificarAdministrador($_SESSION['documento'])) {
+				$usuario = 'administrador';
+			}
+
 			$grupo = new GrupoModelo();
 			$reto = new RetoModelo();
 
@@ -166,9 +181,11 @@
 				if(empty($errores)){
 						
 					$reto->modificarReto($id, $titulo, $descripcionCorta, $especificaciones, $nivelDificultad, $solucionPython, $solucionJava, $tema, $temaGuardado, $imagen, $idGrupo);
-
-					header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
-					
+					if ($usuario == 'profesor') {
+						header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
+					}elseif ($usuario == 'administrador') {
+						header('Location: ../controladores/AdministradorControlador.php?a=verRetos');
+					}
 				}
 			}//end if
 			require "../vistas/EditarReto.view.php";

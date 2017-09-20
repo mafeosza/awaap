@@ -103,11 +103,11 @@
 								
 								<header>
 									<?php 
-										if($test->informacionTest($infoReto['id'])){
+										if($test->informacionTests($infoReto['id'])){
 										$contTest = 1;
 
 									?>
-										<?php foreach($test->informacionTest($infoReto['id']) as $infoTest): ?>
+										<?php foreach($test->informacionTests($infoReto['id']) as $infoTest): ?>
 											<h4><li><?php echo $contTest.". ".$infoTest['descripcion']; $contTest++;?></li></h4>
 											<a href="../controladores/TestControlador.php?a=editar&id=<?php echo $infoTest['id'];?>">Editar</a>
 											<a href="../controladores/TestControlador.php?a=borrar&id=<?php echo $infoTest['id'];?>">borrar</a>

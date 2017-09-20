@@ -42,7 +42,7 @@
 
 			$datosReto = $reto->informacionReto($id);
 
-			$tests = $test->informacionTest($id);	
+			$tests = $test->informacionTests($id);	
 
 			$respuesta = $reto->respuestaPython($id);
 			$codigo = "";

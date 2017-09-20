@@ -39,6 +39,19 @@
 			padding: 1em 5%;
 			background: #fff;
 		}
+		.fa { margin-right:10px; }
+		.fa-trash-o{
+			font-size:24px;
+			color: red;
+		}
+		.fa-pencil{
+			font-size:24px;
+			color: yellow;
+		}
+		.fa-list-ul{
+			font-size:24px;
+			color: orange;	
+		}
 		#iconMas{
 			height: 5%;
   			width: 5%;

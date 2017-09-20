@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-sm-3" style="margin-top: 1.5%;">
 					<ul class="nav navbar-nav navbar-left">
-			       		<li><a href="../controladores/InicioAdministrador.php"><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i>Regresar</a></li>
+			       		<li><a href="../controladores/InicioAdministrador.php"><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i>Regresar al Panel de Control</a></li>
 			      	</ul>	
 				</div>
 				<div class="col-sm-6 container-fluid text-center" style="color: white; margin-left: 0%;">

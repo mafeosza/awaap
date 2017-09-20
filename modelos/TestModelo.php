@@ -76,7 +76,7 @@
 		  * Método que obtiene la informacion del test dado el id del reto 
 		  , a.descripcion, a.valores, a.visible, a.lenguaje
 		*/
-		public function informacionTest($id){
+		public function informacionTests($id){
 			$sql = "SELECT a.id, a.descripcion, a.valores, a.visible, a.lenguaje FROM `Test` a, `Reto` b 
 			WHERE
 			b.id = a.Reto_id 
