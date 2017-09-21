@@ -8,8 +8,9 @@
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
   	<style type="text/css">
-  		.row{
+  		.editar{
   			margin-left: 3%;
   			margin-right: 3%;
   			border: 2px solid #DDD7D5;
@@ -33,128 +34,109 @@
   	</style>
 </head>
 <body>
-	<!--navegador-->
-		<nav class="navbar navbar-inverse">
-			<div class="container-fluid">
-				<div class="navbar-header">
-		      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-		        		<span class="icon-bar"></span>
-		        		<span class="icon-bar"></span>
-		        		<span class="icon-bar"></span>
-		     		</button>
-		    	</div>
-				<div class="collapse navbar-collapse" id="myNavbar">
-					<ul class="nav navbar-nav">
-						<li><a href="../controladores/InicioProfesor.php">Inicio</a></li>
-						<li><a href="../controladores/PanelControl.php?id=<?php echo $idGrupo;?>">Panel de Control</a></li>
-						<li class="active"><a href="#Editar">Test</a></li>	
-						<li><a href="../controladores/ProgresoProfesor.php">Progreso Estudiantes</a></li>
-						<li><a href="../controladores/Raquin.php">Raquin puntajes</a></li>
-			  		</ul>
-			  		<ul class="nav navbar-nav navbar-right">
-		       			<li><a href="../controladores/Cerrar.php"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesi&oacute;n</a></li>
-		      		</ul>
-		      	</div>
-			</div>
-		</nav>
+	<?php if($usuario == 'administrador'){
+			require "../vistas/vistasFijas/barraHorizontal.view.php";
+		  }elseif ($usuario == 'profesor') {
+			require "../vistas/vistasFijas/navegadorHorizontal.view.php";
+		  }
+	?>
 
+	<div class="container-fluid text-center">
+		<h1>AWA<sup>2</sup>P</h1>	
+		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
+	</div>
 
-		<div class="container-fluid text-center">
-			<h1>AWA<sup>2</sup>P</h1>	
-			<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
-		</div>
-
-		<div class="container-fluid ">
-			<div class="panel">
-				<h2>Modificar Test</h2>
-				<article class="row">
-					<form class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
-						<fieldset>
-							<?php if(!empty($errores)): ?>
-								<div class="error">
-									<ul>
-										<?php echo $errores;?>
-									</ul>
-								</div>
-							<?php endif; ?>
-
-							<!--Descripcion-->
-							<div class="control-group">
-								<label class="control-label"><h3>Descripci&oacute;n</h3></label>
-								
-								<div class="controls"><!--salto de linea-->
-									<textarea type="text" id="descripcion" name="descripcion" class="input-xlarge" rows="4"><?php echo $infoTest[0]['descripcion']; ?></textarea>
-								</div>
+	<div class="container-fluid ">
+		<div class="panel">
+			<h2>Modificar Test</h2>
+			<article class="row editar">
+				<form class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
+					<fieldset>
+						<?php if(!empty($errores)): ?>
+							<div class="error">
+								<ul>
+									<?php echo $errores;?>
+								</ul>
 							</div>
+						<?php endif; ?>
 
-							<!--Valores-->
-							<div class="control-group">
-								<label class="control-label"><h3>Valores</h3></label>
-								
-								<div class="controls"><!--salto de linea-->
-									<textarea type="text" id="valores" name="valores" class="input-xlarge" rows="4"><?php echo $infoTest[0]['valores']; ?></textarea>
-								</div>
+						<!--Descripcion-->
+						<div class="control-group">
+							<label class="control-label"><h3>Descripci&oacute;n</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<textarea type="text" id="descripcion" name="descripcion" class="input-xlarge" rows="4"><?php echo $infoTest[0]['descripcion']; ?></textarea>
 							</div>
+						</div>
 
-							<!--Visible-->
-							<div class="control-group">
-								<label class="control-label"><h3>Visible</h3></label>
+						<!--Valores-->
+						<div class="control-group">
+							<label class="control-label"><h3>Valores</h3></label>
 								
-								<div class="controls"><!--salto de linea-->
-									<select id="visible" name="visible">
-										<?php 
-											if($infoTest[0]['visible']==1)
-											{
-										?>
+							<div class="controls"><!--salto de linea-->
+								<textarea type="text" id="valores" name="valores" class="input-xlarge" rows="4"><?php echo $infoTest[0]['valores']; ?></textarea>
+							</div>
+						</div>
+
+						<!--Visible-->
+						<div class="control-group">
+							<label class="control-label"><h3>Visible</h3></label>
+							
+							<div class="controls"><!--salto de linea-->
+								<select id="visible" name="visible">
+									<?php 
+										if($infoTest[0]['visible']==1)
+										{
+									?>
 											<option value="1" selected="selected">Si</option>
 											<option value="0">No</option>
-										<?php 
-											}else{
-										?>
+									<?php 
+										}else{
+									?>
 											<option value="0" selected="selected">No</option>
 											<option value="1">Si</option>
-										<?php 
-											}
-										?>
-									</select>
-								</div>
+									<?php 
+										}
+									?>
+								</select>
 							</div>
+						</div>
 
-							<!--lenguaje-->
-							<div class="control-group">
-								<label class="control-label"><h3>Lenguaje</h3></label>
+						<!--lenguaje-->
+						<div class="control-group">
+							<label class="control-label"><h3>Lenguaje</h3></label>
 								
-								<div class="controls"><!--salto de linea-->
-									<select id="lenguaje" name="lenguaje">
-										<?php 
-											if($infoTest[0]['lenguaje']=="python")
-											{
-										?>
+							<div class="controls"><!--salto de linea-->
+								<select id="lenguaje" name="lenguaje">
+									<?php 
+										if($infoTest[0]['lenguaje']=="python")
+										{
+									?>
 											<option value="python" selected="selected">Python</option>
 											<option value="java">Java</option>
-										<?php 
-											}else{
-										?>
+									<?php 
+										}else{
+									?>
 											<option value="java" selected="selected">Java</option>
 											<option value="python">Python</option>
-										<?php 
-											}
-										?>
-									</select>
-								</div>
+									<?php 
+										}
+									?>
+								</select>
 							</div>
+						</div>
 
-							<div class = "container-fluid text-center">
-								<!-- Button -->
-							    <div class="controls">
-							    	<button class="btn btn-success">Modificar</button>
-							    </div>
-							</div>
+						<div class = "container-fluid text-center">
+							<!-- Button -->
+						    <div class="controls">
+						    	<button class="btn btn-success">Modificar</button>
+						    </div>
+						</div>
 
-						</fieldset>
-					</form>
-				</article>
-			</div>
+					</fieldset>
+				</form>
+			</article>
 		</div>
+	</div>
 </body>
 </html>

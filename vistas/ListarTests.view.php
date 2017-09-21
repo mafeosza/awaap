@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Retos</title>
+	<title>Lista Tests</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="../css/stars.css">
@@ -9,7 +9,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-	<style type="text/css">
+  	<style type="text/css">
   		.panel{
   			margin-left: 3%;
   			margin-right: 3% !important;
@@ -64,66 +64,33 @@
 		    $('[data-toggle="tooltip"]').tooltip();   
 		});
 	</script>
-	<link rel="stylesheet" href="../js/chosen_v1.8.2/chosen.css" type="text/css" />
-    <script src="../js/chosen_v1.8.2/chosen.jquery.js"></script>
-    <script>
-    	jQuery(document).ready(function(){
-		    jQuery.getScript( "//harvesthq.github.io/chosen/chosen.jquery.js" )
-		        .done(function( script, textStatus ) {
-		            jQuery(".chosen1").chosen();
-		        })
-		        .fail(function( jqxhr, settings, exception ) {
-		             alert("Error");
-		    });
-		  
-		});
-    </script>
 </head>
 <body>
-	<?php require "../vistas/vistasFijas/barraHorizontal.view.php"; ?>
-	<form  name="formulario" method="POST" action="">
-		<div class="container buscador">
-			<div class="col-sm-10">
-				<h3>Seleccione:</h3>
-				<select name="chosen-unique" class="chosen1" data-placeholder="Elige un profesor">
-					<option value=""></option>
-					<?php echo $profesoresOpcion;?>
-				</select>
-			</div>
-			<div class="col-sm-2" style="margin-top: 6%;">
-				<!-- Button -->
-				<div class="controls">
-					<button class="btn btn-success">Buscar Retos</button>
-				</div>
-			</div>
-			<?php if(!empty($errores)):?>
-				<p><?php echo $errores; ?></p>
-			<?php endif; ?>
-		</div>
-	</form>
-	<?php if($esSeleccionProfesor and empty($errores)):?>
-		<div class="container-fluid ">
+	<?php require "../vistas/vistasFijas/barraHorizontal.view.php";?>
+	<div style="margin-left: 4%;">
+		<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regrsar a Retos</u></a></h4>
+	</div>
+	<div class="container-fluid ">
 			<div class="panel">
-				<h2>Retos del profesor: <?php echo $nombreProfesor;?></h2>
+				<h2>Test del Reto: <?php echo $tituloReto;?></h2>
 				<div class="retos" id="retos" style="">
 			       	<table class="table table-bordered">
 			       		<thead>
 			       			<tr>
-			       				<th>Espacio acad&eacute;mico</th>
-			       				<th>Tema</th>
-			       				<th>Grupo</th>
-								<th>Titulo</th>
-								<th>Lenguajes</th>
+			       				<th>Descripci&oacute;n</th>
+			       				<th>Valores</th>
+			       				<th>Visibilidad</th>
+								<th>Lenguaje</th>
 								<th style="text-align: center;">Acci&oacute;n</th>
 			       			</tr>
 			       		</thead>
 			       		<tbody>
-			       			<?php echo $tablaRetos; ?>
+			       			<?php echo $tablaTest; ?>
 			       		</tbody>
 			       	</table>
-			       	<?php if($tablaRetos==""):?>
+			       	<?php if($tablaTest==""):?>
 			       		<div style="text-align: center;">
-			       			<h3>No hay retos disponibles</h3>
+			       			<h3>No hay tests disponibles</h3>
 			       		</div>
 			       	<?php endif; ?>
 			       	<div style="text-align: right;">
@@ -132,6 +99,5 @@
 			    </div>
 			</div>
 		</div>
-	<?php endif;?>
 </body>
 </html>

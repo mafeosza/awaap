@@ -5,6 +5,8 @@
 	require "../modelos/ProfesorModelo.php";
 	require "../modelos/GrupoModelo.php";
 	require "../modelos/RegistroModelo.php";
+	require "../modelos/RetoModelo.php";
+	require "../modelos/TestModelo.php";
 
 	/**
 	*Determinar si la sesión está definida 
@@ -348,7 +350,7 @@
 													<td>'.$informacionReto['numero'].'-'.$informacionReto['franja'].'</td>
 													<td>'.$informacionReto['titulo'].'</td>
 													<td>'.$lenguajes.'</td>
-													<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/RetoControlador.php?a=editar&id='.$informacionReto['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/RetoControlador.php?a=borrar&id='.$informacionReto['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Ver Tests Retos" href=""><i class="fa fa-list-ul" aria-hidden="true"></i></a></td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/RetoControlador.php?a=editar&id='.$informacionReto['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/RetoControlador.php?a=borrar&id='.$informacionReto['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Ver Tests Retos" href="../controladores/AdministradorControlador.php?a=verTestsReto&id='.$informacionReto['id'].'"><i class="fa fa-list-ul" aria-hidden="true"></i></a></td>
 												</tr>';
 						$lenguajes = '';
 					}
@@ -356,6 +358,33 @@
 			}
 
 			require "../vistas/RetosPorProfesor.view.php"; 
+		}
+
+		function verTestsReto()
+		{
+			$reto = new RetoModelo();
+			$test = new TestModelo();
+
+			//id del grupo, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$tituloReto = $reto->nombreReto($id);
+
+			$tests = $test->informacionTests($id);
+			$tablaTest = '';
+			foreach ($tests as $informacionTest) {
+				$visibilidad = $informacionTest['visible'] == 1 ? 'SI' : 'NO';
+				$tablaTest.='<tr>
+								<td>'.$informacionTest['descripcion'].'</td>
+								<td>'.$informacionTest['valores'].'</td>
+								<td>'.$visibilidad.'</td>
+								<td>'.$informacionTest['lenguaje'].'</td>
+								<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/TestControlador.php?a=editar&id='.$informacionTest['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/TestControlador.php?a=borrar&id='.$informacionTest['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+							  </tr>
+							';
+			}
+
+			require "../vistas/ListarTests.view.php";
 		}
 
 		//////////////////////////////////////////////
