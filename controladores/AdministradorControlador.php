@@ -365,12 +365,12 @@
 			$reto = new RetoModelo();
 			$test = new TestModelo();
 
-			//id del grupo, valor numerico valido
-			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+			//id del reto, valor numerico valido
+			$idReto = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
-			$tituloReto = $reto->nombreReto($id);
+			$tituloReto = $reto->nombreReto($idReto);
 
-			$tests = $test->informacionTests($id);
+			$tests = $test->informacionTests($idReto);
 			$tablaTest = '';
 			foreach ($tests as $informacionTest) {
 				$visibilidad = $informacionTest['visible'] == 1 ? 'SI' : 'NO';

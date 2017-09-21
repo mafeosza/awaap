@@ -35,15 +35,21 @@
 <body>
 	<?php if($usuario == 'administrador'){
 			require "../vistas/vistasFijas/barraHorizontal.view.php";
-		  }elseif ($usuario == 'profesor') {
-			require "../vistas/vistasFijas/navegadorHorizontal.view.php";
-		  }
 	?>
-
-	<div class="container-fluid text-center">
-		<h1>AWA<sup>2</sup>P</h1>	
-		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
-	</div>
+		<div style="margin-left: 4%;">
+			<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regresar a Retos</u></a></h4>
+		</div>
+	<?php
+		}elseif ($usuario == 'profesor') {
+			require "../vistas/vistasFijas/navegadorHorizontal.view.php";
+	?>
+			<div class="container-fluid text-center">
+				<h1>AWA<sup>2</sup>P</h1>	
+				<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
+			</div>
+	<?php
+		}
+	?>
 
 	<div class="container-fluid ">
 		<div class="panel">

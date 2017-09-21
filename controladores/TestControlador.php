@@ -18,7 +18,18 @@
 	if (isset($_SESSION['documento'])) {
 
 		function nuevo()
-		{
+		{	
+			$profesor = new ProfesorModelo();
+			$administrador = new AdministradorModelo();
+
+			$usuario = '';
+			//se verifica si el documento pertenece a un profesor
+			if ($profesor->verificarProfesor($_SESSION['documento'])) {
+				$usuario = 'profesor';
+			//de lo contrario si el documento pertenece al administrador	
+			}elseif ($administrador->verificarAdministrador($_SESSION['documento'])) {
+				$usuario = 'administrador';
+			}
 
 			//id del Reto al que pertenecera, valor numerico valido
 			$idReto = isset($_GET['id']) ? (int)$_GET['id'] : false;
@@ -56,12 +67,20 @@
 						}elseif (isset($_POST['gFinalizar'])) {
 
 							$test->crearTest($descripcion, $valores, $visible, $lenguaje, $idReto);
-							header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
+							if ($usuario == 'profesor') {
+								header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
+							}elseif ($usuario == 'administrador') {
+								header('Location: ../controladores/AdministradorControlador.php?a=verTestsReto&id='.$idReto);
+							}
 							
 						}
 					}
 					if (isset($_POST['finalizar'])) {
-						header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
+							if ($usuario == 'profesor') {
+								header('Location: ../controladores/PanelControl.php?id='.$idGrupo);
+							}elseif ($usuario == 'administrador') {
+								header('Location: ../controladores/AdministradorControlador.php?a=verTestsReto&id='.$idReto);
+							}
 					}
 
 				}

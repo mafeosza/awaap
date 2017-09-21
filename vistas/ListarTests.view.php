@@ -68,7 +68,7 @@
 <body>
 	<?php require "../vistas/vistasFijas/barraHorizontal.view.php";?>
 	<div style="margin-left: 4%;">
-		<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regrsar a Retos</u></a></h4>
+		<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regresar a Retos</u></a></h4>
 	</div>
 	<div class="container-fluid ">
 			<div class="panel">
@@ -94,7 +94,7 @@
 			       		</div>
 			       	<?php endif; ?>
 			       	<div style="text-align: right;">
-		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
+		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/TestControlador.php?a=nuevo&id=<?php echo $idReto;?>"><img id="iconMas" src="../imagenes/plus.png"></a>
 		        	</div>
 			    </div>
 			</div>
