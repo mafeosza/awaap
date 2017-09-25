@@ -7,6 +7,7 @@
 	require "../modelos/RegistroModelo.php";
 	require "../modelos/RetoModelo.php";
 	require "../modelos/TestModelo.php";
+	require "../modelos/TemaModelo.php";
 
 	/**
 	*Determinar si la sesión está definida 
@@ -85,8 +86,14 @@
 
 		function eliminarEspacio()
 		{
+			$espacioAcademico = new EspacioAcademicoModelo();
+
+			//id del espacio academico, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$espacioAcademico->eliminarEspacioAcademico($id);
+			header('Location: ../controladores/InicioAdministrador.php');	
 			#echo '<script>alert("hola"); </script>';
-			#require "../vistas/EliminarEspacio.view.php";
 		}
 
 		//////////////////////////////////////////////
@@ -149,7 +156,14 @@
 
 		function eliminarEstudiante()
 		{
-			require "../vistas/EliminarEstudiante.view.php";
+			$estudiante = new EstudianteModelo();
+
+			//id del estudiante, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$estudiante->eliminarEstudiante($id);
+			header('Location: ../controladores/InicioAdministrador.php');	
+			#echo '<script>alert("hola"); </script>';
 		}
 
 		function registrarEstudiante()
@@ -255,7 +269,14 @@
 
 		function eliminarProfesor()
 		{
-			require "../vistas/EliminarProfesor.view.php";
+			$profesor = new ProfesorModelo();
+
+			//id del profesor, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$profesor->eliminarProfesor($id);
+			header('Location: ../controladores/InicioAdministrador.php');	
+			#echo '<script>alert("hola"); </script>';
 		}
 
 		function registrarProfesor()
@@ -387,6 +408,42 @@
 			require "../vistas/ListarTests.view.php";
 		}
 
+		function crearReto()
+		{	
+			$profesor = new ProfesorModelo();
+
+			//id del profesor, valor numerico valido
+			$idProfesor = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$documentoProfesor = $profesor->documentoProfesor($idProfesor);
+
+			$grupos = $profesor->gruposEspaciosAcademicos($documentoProfesor);
+
+			$opcionesGrupos = '';
+			foreach ($grupos as $grupo) {
+				$opcionesGrupos.='<option value="'.$grupo['EspacioAcademico_id'].' '.$grupo['id'].'">'.$grupo['numero'].'-'.$grupo['franja'].' '.$grupo['espacioAcademico'].'</option>';
+			}
+
+			require "../vistas/DatosNuevoReto.view.php";
+		}
+
+		function obtenerTemas()
+		{
+			$espacioAcademico = new EspacioAcademicoModelo();
+
+			$idEspacioAcademico = explode(" ", $_GET['id']);
+
+			$temas = $espacioAcademico->temasEspacioAcademico($idEspacioAcademico[0]);
+
+			$opcionesTema = '';
+			foreach ($temas as $informacionTema) {
+				$opcionesTema.= '<option valu="'.$informacionTema['idTema'].'">'.$informacionTema['nombreTema'].'</option>';
+			}
+			echo json_encode($opcionesTema);
+			#echo json_encode($idEspacioAcademico[0]);
+
+		}
+
 		//////////////////////////////////////////////
 		//		       Métodos Grupo		  		//
 		//////////////////////////////////////////////
@@ -436,7 +493,14 @@
 
 		function eliminarGrupo()
 		{
-			require "../vistas/EliminarGrupo.view.php";
+			$grupo = new GrupoModelo();
+
+			//id del grupo, valor numerico valido
+			$id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$grupo->eliminarGrupo($id);
+			header('Location: ../controladores/InicioAdministrador.php');	
+			#echo '<script>alert("hola"); </script>';
 		}
 
 		function crearGrupo()
@@ -509,12 +573,14 @@
 			if ($_SERVER['REQUEST_METHOD'] =='POST') {
 				//variable que contendra los errores del usuario
 				$errores='';
-				
+
+				//Se guardan los datos ingresados por el usuario en variables
+				$ids = $_POST['chosen-multiple'];
+
+				#print_r($ids);
 				if (empty($ids)) {
 					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
 				}else{
-					//Se guardan los datos ingresados por el usuario en variables
-					$ids = $_POST['chosen-multiple'];
 					foreach ($ids as $idEstudiante) {
 						$registro->agregarRegistro($idGrupo, $idProfesor, $idEstudiante);
 						header('Location: ../controladores/AdministradorControlador.php?a=agregarEstudianteGrupo&id='.$idGrupo);

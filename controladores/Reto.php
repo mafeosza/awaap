@@ -285,7 +285,7 @@
 							2 => array("pipe", "w")   //gestor de escritura conectado al stderr hijo
 						);
 
-						$process = proc_open('python -c "'.$codigo.'"', $descriptorspec, $pipes);
+						$process = proc_open('timeout 2s python -c "'.$codigo.'"', $descriptorspec, $pipes);
 
 						if (is_resource($process)){	
 							fwrite($pipes[0], $valor);

@@ -77,6 +77,15 @@
 		}
 
 		/**
+		*Método que elimina un estudiante 
+		*/
+		public function eliminarEstudiante($id)
+		{
+			$sql = "DELETE FROM `Estudiante` WHERE `Estudiante`.`id` = $id";
+			$consulta = $this->query($sql);
+		}
+
+		/**
 		*Método que brinda la informacion de un estudiante
 		*/
 		public function informacionEstudiante($id)

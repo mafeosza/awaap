@@ -49,6 +49,15 @@
 		}
 
 		/**
+		*Método que elimina un grupo 
+		*/
+		public function eliminarGrupo($id)
+		{
+			$sql = "DELETE FROM `Grupo` WHERE `Grupo`.`id` = $id";
+			$consulta = $this->query($sql);
+		}
+
+		/**
 		*Método que brinda la información de un grupo
 		*/
 		public function informacionGrupo($id)

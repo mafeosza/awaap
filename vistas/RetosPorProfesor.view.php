@@ -127,7 +127,7 @@
 			       		</div>
 			       	<?php endif; ?>
 			       	<div style="text-align: right;">
-		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearEspacio"><img id="iconMas" src="../imagenes/plus.png"></a>
+		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearReto&id=<?php echo $idProfesor;?>"><img id="iconMas" src="../imagenes/plus.png"></a>
 		        	</div>
 			    </div>
 			</div>

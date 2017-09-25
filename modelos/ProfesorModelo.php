@@ -73,6 +73,21 @@
 		}
 
 		/**
+		* Método que retorna el documento de un profesor dado su id
+		*/
+		public function documentoProfesor($id)
+		{
+			$sql = "SELECT `documento` FROM `Profesor` WHERE `id` = $id";
+			$consulta = $this->query($sql);
+			
+			$datos= array();
+			$datos = $consulta->fetch();
+			$id = $datos[0];
+
+			return $id;
+		}
+
+		/**
 		*Método que registra un profesor
 		*/
 		public function registrarProfesor($documento, $nombre, $email, $password)
@@ -88,6 +103,15 @@
 		{
 			$sql="UPDATE `Profesor` SET `documento` = '$documento', `nombre` = '$nombre', `correo` = '$correo', `clave` = '$clave'
 			WHERE `Profesor`.id = '$id'";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que elimina un profesor 
+		*/
+		public function eliminarProfesor($id)
+		{
+			$sql = "DELETE FROM `Profesor` WHERE `Profesor`.`id` = $id";
 			$consulta = $this->query($sql);
 		}
 
@@ -150,9 +174,10 @@
 		*/
 		public function gruposEspaciosAcademicos($documento)
 		{
-			$sql = "SELECT a.id, a.numero, a.franja, a.EspacioAcademico_id FROM `Grupo` a, `Profesor` b 
+			$sql = "SELECT a.id, a.numero, a.franja, a.EspacioAcademico_id, c.nombre as espacioAcademico FROM `Grupo` a, `Profesor` b, `EspacioAcademico`c  
 			WHERE 
-			b.id = a.Profesor_id
+			b.id = a.Profesor_id AND
+            c.id = a.EspacioAcademico_id            
 			AND b.documento = $documento";
 			$consulta = $this->query($sql);
 

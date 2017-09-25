@@ -47,7 +47,7 @@
 			<div class="col-sm-6" align="left">
 				<?php if(!empty($grupos)): ?>
 					<?php foreach($grupos as $grupo):?>
-						<a href="../controladores/PanelControl.php?id=<?php echo $grupo['id'];?>"><h4><li><?php echo $grupo['numero']." ".$grupo['franja']."- ".$espacioAcademico->nombreEspacioAcademico($grupo['EspacioAcademico_id']);?></li></h4></a>
+						<a href="../controladores/PanelControl.php?id=<?php echo $grupo['id'];?>"><h4><li><?php echo $grupo['numero']." ".$grupo['franja']."- ".$grupo['espacioAcademico'];?></li></h4></a>
 					<?php endforeach;?>
 				<?php endif; ?>
 				<?php if(empty($grupos)): ?>

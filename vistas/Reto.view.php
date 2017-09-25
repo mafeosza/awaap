@@ -22,6 +22,21 @@
   		.textBarra{
   			margin-left: 1%;
   		}
+  		.editor{
+  			border-radius: 10px;
+  			border: 2px solid #D0D0D0;
+  		}
+  		<?php if($lenguaje == 'java'):?>
+  		#codigo {
+		    border: none;
+		    overflow: auto;
+		    outline: none;
+
+		    -webkit-box-shadow: none;
+		    -moz-box-shadow: none;
+		    box-shadow: none;
+		}
+		<?php endif; ?>
   	</style>
   	
 </head>
@@ -73,7 +88,6 @@
 	<!--Barra de progreso-->
 	<div class="progress">
 		<div id="progressbar" class="progress-bar" style="width:0%;"></div>
-
 	</div>
 
 	<!-- Se pinta en la barra el porcentaje calculado -->
@@ -103,21 +117,32 @@
 		<p align="left"><?php echo $datosReto[0]['especificaciones'];?></p>
 	</div>
 
-	<div class="container-fluid text-center">
+	<div class="container-fluid">
 	
 		<div class="row content">
 			<div class="col-sm-8">
 				<form action="#" method="POST" name="compilar">
 					<fieldset>
-						
 						<h4 align="left">Escribe tu c&oacute;digo aqu&iacute;</h4>
-
-						<div class="form-group">
-							<textarea class="form-control" rows="8" id="codigo" name="codigo" required></textarea>
+						<?php if($lenguaje == 'java'):?>
+						<div class="editor">
+								<div class="preEditor" style="margin:2%;">
+									<p>import</p>
+									<p>public main{</p>
+								</div>
+						<?php endif;?>
+							<div class="form-group">
+								<textarea class="form-control" rows="8" id="codigo" name="codigo" required></textarea>
+							</div>
+						<?php if($lenguaje == 'java'):?>
+							<div class="postEditor" style="margin:2%;">
+								<p>}</p>
+							</div>
 						</div>
+						<?php endif;?>
 						
 						 <div class="form-group">
-						 	<div class="controls">
+						 	<div class="controls text-center">
 						 		<input type="submit" class="btn btn-success" id="boton" value="Enviar"/> 
 								
 							</div>
@@ -130,7 +155,6 @@
 			<div class="col-sm-4">
 				<div class="tests" align="left">
 					<h3 align="left">Tests</h3>
-					
 						<?php echo $contenidoLi; ?>
 				</div>
 			</div>

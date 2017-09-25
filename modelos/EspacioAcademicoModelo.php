@@ -49,6 +49,15 @@
 		}
 
 		/**
+		*Método que elimina un espacio academico
+		*/
+		public function eliminarEspacioAcademico($id)
+		{
+			$sql = "DELETE FROM `EspacioAcademico` WHERE `EspacioAcademico`.`id` = $id";
+			$consulta = $this->query($sql);
+		}
+
+		/**
 		*Método que brinda la información de un espacio académico
 		*/
 		public function informacionEspacioAcademico($id)
@@ -106,6 +115,24 @@
 			
 			return $datos;
 
+		}
+
+		/**
+		*Método que retorna los temas de un espacio academico
+		*/
+		public function temasEspacioAcademico($id)
+		{
+			$sql = "SELECT a.id as idTema, a.nombre as nombreTema FROM `Tema` a, `Unidad` b, `EspacioAcademico` c 
+			WHERE 
+			a.Unidad_id = b.id
+			AND b.EspacioAcademico_id = c.id
+			AND c.id = $id";
+			$consulta =$this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetchAll();
+			
+			return $datos;			
 		}
 
 		/**
