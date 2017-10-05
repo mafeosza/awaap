@@ -8,6 +8,7 @@
 	require "../modelos/RetoModelo.php";
 	require "../modelos/TestModelo.php";
 	require "../modelos/TemaModelo.php";
+	require "../modelos/UnidadModelo.php";
 
 	/**
 	*Determinar si la sesión está definida 
@@ -32,6 +33,7 @@
 				//Se guardan los datos ingresados por el usuario en variables
 				$nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_STRING);
 				$semestre = $_POST['semestre'];
+				#$numeroUnidades = $_POST['unidades'];
 
 				//verificar que los campos no esten vacios
 				if (empty($nombre) or empty($semestre)) {
@@ -42,6 +44,14 @@
 				if (empty($errores)) {
 					$espacioAcademico->crearEspacioAcademico($nombre, $semestre);
 					header('Location: ../controladores/InicioAdministrador.php');
+					/**if (!empty($numeroUnidades)) {
+
+						$idEspacioAcademico = $espacioAcademico->idUltimoEspacio();
+
+						for ($numero = 1; $numero <= $numeroUnidades; $numero++) { 
+							$unidad->crearUnidad($numero, $idEspacioAcademico);
+						}
+					}*/
 				}
 			}
 			require "../vistas/CrearEspacio.view.php";
@@ -96,6 +106,164 @@
 			#echo '<script>alert("hola"); </script>';
 		}
 
+		function verUnidades()
+		{
+			$espacioAcademico = new EspacioAcademicoModelo();
+
+			$espaciosAcademicos = $espacioAcademico->listarEspaciosAcademicos();
+
+			$esSeleccionEspacio = false;
+
+			$espaciosOpcion = "";
+			foreach ($espaciosAcademicos as $informacionEspacio) {
+				$espaciosOpcion.= '<option value="'.$informacionEspacio['id'].'">'.$informacionEspacio['nombre'].'</option>';
+			}
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				
+				$esSeleccionEspacio = true;
+
+				//variable que contendra los errores del usuario
+				$errores='';
+				//Se guardan los datos ingresados por el usuario en variables
+				$idEspacioAcademico = $_POST['chosen-unique'];
+				if (empty($idEspacioAcademico)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}else{
+					$informacionEspacio = $espacioAcademico->informacionEspacioAcademico($idEspacioAcademico);
+					$nombreEspacio = $informacionEspacio['nombre'];
+
+					$unidadesEspacio = $espacioAcademico->obtenerUnidades($idEspacioAcademico);
+					$tablaUnidades = '';
+					foreach ($unidadesEspacio as $informacionUnidad) {
+
+						$tablaUnidades.= '<tr><td>'.$informacionUnidad['id'].'</td>
+													<td>'.$informacionUnidad['numero'].'</td>
+													<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/UnidadControlador.php?a=editar&id='.$informacionUnidad['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/UnidadControlador.php?a=borrar&id='.$informacionUnidad['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Ver Temas" href="../controladores/AdministradorControlador.php?a=verTemas&id='.$informacionUnidad['id'].'"><i class="fa fa-list-ul" aria-hidden="true"></i></a></td>
+												</tr>';
+					}
+				}
+			}
+
+			require "../vistas/UnidadesPorEspacio.view.php"; 
+		}
+
+		function verTemas()
+		{
+			$unidad = new UnidadModelo();
+			$tema = new TemaModelo();
+
+			//id de la unidad, valor numerico valido
+			$idUnidad = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			//unidad y espacio academcio
+			$espacioAcademico = $unidad->espacioAcademicoUnidad($idUnidad);
+			$informacionUnidad = $unidad->informacionUnidad($idUnidad);
+
+			$titulo = $espacioAcademico['nombre'].' Unidad-'.$informacionUnidad['numero'];
+			
+			$temas = $unidad->temasUnidad($idUnidad);
+			$tablaTemas = '';
+			foreach ($temas as $informacionTema) {
+				$tablaTemas.='<tr>
+								<td>'.$informacionTema['id'].'</td>
+								<td>'.$informacionTema['nombre'].'</td>
+								<td style="text-align: center;"><a data-toggle="tooltip" title="Editar" href="../controladores/AdministradorControlador.php?a=editarTema&id='.$informacionTema['id'].'"><i class="fa fa-pencil" aria-hidden="true"></i></a><a data-toggle="tooltip" title="Eliminar" href="../controladores/AdministradorControlador.php?a=eliminarTema&id='.$informacionTema['id'].'"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+							  </tr>
+							';
+			}
+
+			require "../vistas/ListarTemas.view.php";
+		}
+
+		function crearTema()
+		{
+			$tema = new TemaModelo();
+
+			//id de la unidad al que pertenecera el tema, valor numerico valido
+			$idUnidad = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			if(!$idUnidad){
+				header('Location: ../vistas/Error.php');
+			}
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				//variable que contendra los errores del usuario
+				$errores='';
+
+				$nombre = $_POST['nombre'];
+
+				if (empty($nombre)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}else{
+					$tema->crearTema($nombre, $idUnidad);
+					if (isset($_POST['crear'])) {
+						header('Location: ../controladores/AdministradorControlador.php?a=verTemas&id='.$idUnidad);
+					}
+				}
+			}
+			require "../vistas/CrearTema.view.php";
+		}
+
+		function editarTema()
+		{
+			$tema = new TemaModelo();
+
+			//id tema valor numerico valido
+			$idTema = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			if(!$idTema){
+				header('Location: ../vistas/Error.php');
+			}
+
+			$informacionTema = $tema->informacionTema($idTema);
+
+			/**
+			*Comprobar que el usuario envio los datos, 
+			*verificando si se enviaron datos por el método post
+			*/
+			if ($_SERVER['REQUEST_METHOD'] =='POST') {
+				//variable que contendra los errores del usuario
+				$errores='';
+
+				$nombre = $_POST['nombre'];
+
+				if (empty($nombre)) {
+					$errores .= '<li>Por favor completa todos los datos correctamente</li>';
+				}else{
+					$tema->editarTema($nombre, $idTema, $informacionTema['Unidad_id'] );
+						header('Location: ../controladores/AdministradorControlador.php?a=verTemas&id='.$informacionTema['Unidad_id']);
+				}
+			}
+
+			require "../vistas/EditarTema.view.php";
+		}
+
+		function eliminarTema()
+		{
+			$tema = new TemaModelo();
+
+			//id tema valor numerico valido
+			$idTema = isset($_GET['id']) ? (int)$_GET['id'] : false;
+
+			$informacionTema = $tema->informacionTema($idTema);
+
+			if(!$idTema){
+				header('Location: ../vistas/Error.php');
+			}
+
+			$tema->eliminarTema($idTema);
+			header('Location: ../controladores/AdministradorControlador.php?a=verTemas&id='.$informacionTema['Unidad_id']);
+
+		}
 		//////////////////////////////////////////////
 		//		     Métodos Estudiante		  		//
 		//////////////////////////////////////////////
@@ -375,6 +543,15 @@
 												</tr>';
 						$lenguajes = '';
 					}
+
+					$documentoProfesor = $profesor->documentoProfesor($idProfesor);
+
+					$grupos = $profesor->gruposEspaciosAcademicos($documentoProfesor);
+
+					$opcionesGrupos = '';
+					foreach ($grupos as $grupo) {
+						$opcionesGrupos.='<option value="'.$grupo['id'].'">'.$grupo['numero'].'-'.$grupo['franja'].' '.$grupo['espacioAcademico'].'</option>';
+					}
 				}
 			}
 
@@ -406,25 +583,6 @@
 			}
 
 			require "../vistas/ListarTests.view.php";
-		}
-
-		function crearReto()
-		{	
-			$profesor = new ProfesorModelo();
-
-			//id del profesor, valor numerico valido
-			$idProfesor = isset($_GET['id']) ? (int)$_GET['id'] : false;
-
-			$documentoProfesor = $profesor->documentoProfesor($idProfesor);
-
-			$grupos = $profesor->gruposEspaciosAcademicos($documentoProfesor);
-
-			$opcionesGrupos = '';
-			foreach ($grupos as $grupo) {
-				$opcionesGrupos.='<option value="'.$grupo['EspacioAcademico_id'].' '.$grupo['id'].'">'.$grupo['numero'].'-'.$grupo['franja'].' '.$grupo['espacioAcademico'].'</option>';
-			}
-
-			require "../vistas/DatosNuevoReto.view.php";
 		}
 
 		function obtenerTemas()

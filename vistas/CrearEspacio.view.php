@@ -27,14 +27,29 @@
   		.control-group, #legend{
   			margin-left: 3%;
   		}
+  		.chosen1{
+  			width: 90%;
+  		}
   		input{
-  			width: 40%;
+  			width: 90%;
   			height: 35px;
   		}
-  		textarea{
-  			width: 80%;
-  		}
   	</style>
+  	<link rel="stylesheet" href="../js/chosen_v1.8.2/chosen.css" type="text/css" />
+    <script src="../js/chosen_v1.8.2/chosen.jquery.js"></script>
+  	 <script>
+    	jQuery(document).ready(function(){
+		    jQuery.getScript( "//harvesthq.github.io/chosen/chosen.jquery.js" )
+		        .done(function( script, textStatus ) {
+		            jQuery(".chosen1").chosen();
+		            $("chosen2").chosen({width: "inherit"});
+		        })
+		        .fail(function( jqxhr, settings, exception ) {
+		             alert("Error");
+		    });
+		  
+		});
+    </script>
 </head>
 <body>
 	<?php require "../vistas/vistasFijas/barraHorizontal.view.php"; ?>
@@ -74,9 +89,9 @@
 								<div class="control-group">
 									<label for= "semestre" class="control-label"><h3>Semestre</h3></label>
 									<div class="controls"><!--salto de linea-->
-										<select id="semestre" name="semestre">
+										<select id="semestre" name="semestre" class="chosen1" data-placeholder="Elige un semestre">
 											<option value="" selected="selected">Seleccione</option>
-											<?php for ($i=1; $i <=10; $i++): ?>
+											<?php for ($i=1; $i <=11; $i++): ?>
 												
 												<option value="<?php echo $i; ?>">Semestre-<?php echo $i; ?></option>
 											<?php endfor; ?>
@@ -86,6 +101,19 @@
 								</div>
 							</div>
 						</div>
+						<!--div class="row fila">
+							<div class="col-sm-6"-->
+								<!--Unidades-->
+								<!--div class="control-group">
+									<label class="control-label"><h3>N&uacute;mero de Unidades</h3></label>
+									
+									<div class="controls">
+										<input type="text" id="unidades" name="unidades" placeholder="" class="input-xlarge">
+										<p class="help-block">Por favor escribe el n&uacute;mero de unidades del espacio acad&eacute;mico</p>
+									</div>
+								</div>	
+							</div>
+						</div-->
 							<br>
 						<div class = "container-fluid text-center">
 							<!-- Button -->

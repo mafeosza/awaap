@@ -12,7 +12,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="../controladores/InicioProfesor.php">Inicio</a></li>
 				<li><a href="../controladores/PanelControl.php?id=<?php echo $idGrupo;?>">Panel de Control</a></li>
-				<li class="active"><a href="#Nuevo">Nuevo Reto</a></li>	
+				<li class="active"><a href="#Nuevo">Reto</a></li>	
 				<li><a href="../controladores/ProgresoProfesor.php">Progreso Estudiantes</a></li>
 				<li><a href="../controladores/Raquin.php">Raquin puntajes</a></li>
 	  		</ul>

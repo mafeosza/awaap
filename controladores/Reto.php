@@ -406,7 +406,7 @@
 
 						}
 						//proceso para ejecutar java - salidas, errores de ejecucion (null pointer exception)
-						$process_cmd = "cd /tmp;/usr/bin/java tempEstudiante".$idEstudiante;
+						$process_cmd = "timeout 2s cd /tmp;/usr/bin/java tempEstudiante".$idEstudiante;
 						$env = NULL;
 						$options = ["bypass_shell" => true];
 						$cwd = NULL;

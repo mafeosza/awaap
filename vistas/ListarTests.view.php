@@ -29,12 +29,6 @@
 			font-size:24px;
 			color: red;
 		}
-		.buscador{
-			width: 80%;
-			margin: 1em auto;
-			padding: 1em 5%;
-			background: #fff;
-		}
 		.fa { margin-right:10px; }
 		.fa-trash-o{
 			font-size:24px;
@@ -71,33 +65,33 @@
 		<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regresar a Retos</u></a></h4>
 	</div>
 	<div class="container-fluid ">
-			<div class="panel">
-				<h2>Test del Reto: <?php echo $tituloReto;?></h2>
-				<div class="retos" id="retos" style="">
-			       	<table class="table table-bordered">
-			       		<thead>
-			       			<tr>
-			       				<th>Descripci&oacute;n</th>
-			       				<th>Valores</th>
-			       				<th>Visibilidad</th>
-								<th>Lenguaje</th>
-								<th style="text-align: center;">Acci&oacute;n</th>
-			       			</tr>
-			       		</thead>
-			       		<tbody>
-			       			<?php echo $tablaTest; ?>
-			       		</tbody>
-			       	</table>
-			       	<?php if($tablaTest==""):?>
-			       		<div style="text-align: center;">
-			       			<h3>No hay tests disponibles</h3>
-			       		</div>
-			       	<?php endif; ?>
-			       	<div style="text-align: right;">
-		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/TestControlador.php?a=nuevo&id=<?php echo $idReto;?>"><img id="iconMas" src="../imagenes/plus.png"></a>
-		        	</div>
-			    </div>
-			</div>
+		<div class="panel">
+			<h2>Test del Reto: <?php echo $tituloReto;?></h2>
+			<div class="retos" id="retos" style="">
+		       	<table class="table table-bordered">
+		       		<thead>
+		       			<tr>
+		       				<th>Descripci&oacute;n</th>
+		       				<th>Valores</th>
+		       				<th>Visibilidad</th>
+							<th>Lenguaje</th>
+							<th style="text-align: center;">Acci&oacute;n</th>
+		       			</tr>
+		       		</thead>
+		       		<tbody>
+		       			<?php echo $tablaTest; ?>
+		       		</tbody>
+		       	</table>
+		       	<?php if($tablaTest==""):?>
+		       		<div style="text-align: center;">
+		       			<h3>No hay tests disponibles</h3>
+		       		</div>
+		       	<?php endif; ?>
+		       	<div style="text-align: right;">
+	        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/TestControlador.php?a=nuevo&id=<?php echo $idReto;?>"><img id="iconMas" src="../imagenes/plus.png"></a>
+	        	</div>
+		    </div>
 		</div>
+	</div>
 </body>
 </html>

@@ -155,6 +155,21 @@
 
 		} 
 
+		/**
+		*Método que devuelve el valor del id del ultimo espacio academico creado
+		*/
+		public function idUltimoEspacio(){
+			$sql = "SELECT max(id) FROM `EspacioAcademico` LIMIT 1";
+			$consulta = $this->query($sql);
+			
+			$datos = array();
+			$datos = $consulta->fetch();
+
+			$idReto = $datos[0];
+
+			return $idReto;
+		}
+
 	}
 
 

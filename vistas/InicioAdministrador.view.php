@@ -110,6 +110,11 @@
 	                        <div class="panel-body">
 	                            <table class="table">
 	                                <tr>
+	                                	<td>
+	                                        <a href="../controladores/AdministradorControlador.php?a=verUnidades">Unidades-Temas Espacio Acad&eacute;mico</a>
+	                                    </td>
+	                                </tr>
+	                                <tr>
 	                                    <td>
 	                                        <a href="#reoprtePorEspacio">Reportes Por Espacio Acad&eacute;mico</a>
 	                                    </td>

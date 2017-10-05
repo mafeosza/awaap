@@ -80,30 +80,39 @@
 	<div style="margin-left: 4%;">
 		<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regresar a Retos</u></a></h4>
 	</div>
-	<div class="container-fluid ">
-		<div class="panel">
-			<h3>Seleccione el grupo al que se le crear&aacute; el reto:</h3>
-			<select name="chosen-unique" class="chosen1" data-placeholder="Elige un grupo">
-				<option value=""></option>
-				<?php echo $opcionesGrupos;?>
-			</select>
+	<form  name="formulario" method="POST" action="">
+		<div class="container-fluid ">
+			<div class="panel">
+				<h3>Seleccione el grupo al que se le crear&aacute; el reto:</h3>
+				<select name="chosen-unique" class="chosen1" data-placeholder="Elige un grupo">
+					<option value=""></option>
+					<?php echo $opcionesGrupos;?>
+				</select>
+			</div>
 		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="panel">
-			<h3>Seleccione el tema al que se le crear&aacute; el reto:</h3>
-			<select id="yo" name="chosen-unique" class="chosen2" data-placeholder="Elige un tema">
-				<option value=""></option>
-				<?php echo $opcionesTema;?>
-			</select>
+		<div class="container-fluid">
+			<div class="panel">
+				<h3>Seleccione el tema al que se le crear&aacute; el reto:</h3>
+				<select name="chosen-unique2" class="chosen2" data-placeholder="Elige un tema">
+					<option value=""></option>
+					<?php echo $opcionesTema;?>
+				</select>
+			</div>
 		</div>
-	</div>
+		<br>
+		<div class = "container-fluid text-center">
+			<!-- Button -->
+		    <div class="controls">
+		    	<button class="btn btn-success">Crear</button>
+		    </div> 
+		</div>		
+	</form>
 </body>
 <script>
 	$('.chosen1').change(function(){ 
 		var grupo = $(this).val(); 
-		$('#yo').empty();
-		//console.log(grupo);  
+		$('.chosen2').empty();
+			//console.log(grupo);  
 			$.ajax({
 	        type: 'GET',
 	        data: { a : 'obtenerTemas', id: grupo },
@@ -116,5 +125,6 @@
 	function poblarSelect(data){
 		$('.chosen2').append(data);
 		$('.chosen2').trigger("chosen:updated");
+	}
 </script>
 </html>

@@ -12,6 +12,18 @@
 		
 		function nuevo()
 		{
+			$profesor = new ProfesorModelo();
+			$administrador = new AdministradorModelo();
+
+			$usuario = '';
+			//se verifica si el documento pertenece a un profesor
+			if ($profesor->verificarProfesor($_SESSION['documento'])) {
+				$usuario = 'profesor';
+			//de lo contrario si el documento pertenece al administrador	
+			}elseif ($administrador->verificarAdministrador($_SESSION['documento'])) {
+				$usuario = 'administrador';
+			}
+			
 			$grupo = new GrupoModelo();
 			$reto = new RetoModelo();
 
@@ -19,7 +31,7 @@
 			$idGrupo = isset($_GET['id']) ? (int)$_GET['id'] : false;
 
 			if(!$idGrupo){
-				header('Location: ../Index.php');
+				header('Location: ../vistas/Error.php');
 			}
 
 			$temas = $grupo->temasGrupo($idGrupo);
@@ -219,6 +231,6 @@
 
 	}
 	else{
-		require "../vistas/Error.php";
+		header('Location: ../Index.php');
 	}
 ?>

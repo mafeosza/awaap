@@ -71,6 +71,9 @@
 		    jQuery.getScript( "//harvesthq.github.io/chosen/chosen.jquery.js" )
 		        .done(function( script, textStatus ) {
 		            jQuery(".chosen1").chosen();
+		            jQuery(".chosen2").chosen();
+		            $("chosen2").chosen({width: "inherit"});
+		            $("chosen2").trigger("chosen:updated");
 		        })
 		        .fail(function( jqxhr, settings, exception ) {
 		             alert("Error");
@@ -127,11 +130,42 @@
 			       		</div>
 			       	<?php endif; ?>
 			       	<div style="text-align: right;">
-		        		<a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearReto&id=<?php echo $idProfesor;?>"><img id="iconMas" src="../imagenes/plus.png"></a>
+		        		<!--a data-toggle="tooltip" title="Agregar nuevo" href="../controladores/AdministradorControlador.php?a=crearReto&id=<?php #echo $idProfesor;?>"><img id="iconMas" src="../imagenes/plus.png"></a-->
+		        		<a data-toggle="modal" data-target="#seleccionGrupo" data-toggle="tooltip" title="Agregar nuevo"><img id="iconMas" src="../imagenes/plus.png"/></a>
 		        	</div>
 			    </div>
 			</div>
 		</div>
 	<?php endif;?>
+
+	<div class="modal fade" id="seleccionGrupo" tabindex="-1" role="dialog" area-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3>Seleccione el grupo al que se le crear&aacute; el reto:</h3>
+				</div>
+				<div class="modal-body">
+					<form name="formularioModal" method="POST" action="">
+						<!--select name="chosen-unique2" class="chosen2" data-placeholder="Elige un grupo"-->
+						<select name="chosen-unique2" id="chosen2" data-placeholder="Elige un grupo">
+							<option value=""></option>
+							<?php echo $opcionesGrupos;?>
+						</select>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-info" name="continuar" id="continuar">Continuar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
+<script>
+	$("#continuar").click(function(){
+		var grupo = $("#chosen2").val();
+		console.log(grupo);
+		window.location.href = '../controladores/RetoControlador.php?a=nuevo&id='+grupo;
+	});
+</script>
 </html>

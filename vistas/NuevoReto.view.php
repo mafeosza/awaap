@@ -8,8 +8,9 @@
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
   	<style type="text/css">
-  		.row{
+  		.crear{
   			margin-left: 3%;
   			margin-right: 3%;
   			border: 2px solid #DDD7D5;
@@ -32,41 +33,28 @@
   	</style>
 </head>
 <body>
-
-	<!--navegador-->
-	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
-			<div class="navbar-header">
-	      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-	        		<span class="icon-bar"></span>
-	        		<span class="icon-bar"></span>
-	        		<span class="icon-bar"></span>
-	     		</button>
-	    	</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav">
-					<li><a href="../controladores/InicioProfesor.php">Inicio</a></li>
-					<li><a href="../controladores/PanelControl.php?id=<?php echo $idGrupo;?>">Panel de Control</a></li>
-					<li class="active"><a href="#Nuevo">Nuevo Reto</a></li>	
-					<li><a href="../controladores/ProgresoProfesor.php">Progreso Estudiantes</a></li>
-					<li><a href="../controladores/Raquin.php">Raquin puntajes</a></li>
-		  		</ul>
-		  		<ul class="nav navbar-nav navbar-right">
-	       			<li><a href="../controladores/Cerrar.php"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesi&oacute;n</a></li>
-	      		</ul>
-	      	</div>
+	<?php if($usuario == 'administrador'){
+			require "../vistas/vistasFijas/barraHorizontal.view.php";
+	?>
+		<div style="margin-left: 4%;">
+			<h4><i class="fa fa-arrow-left" aria-hidden="true" style="padding: 5px;"></i><a style="color: black;" href="../controladores/AdministradorControlador.php?a=verRetos"><u>Regresar a Retos</u></a></h4>
 		</div>
-	</nav>
-
-	<div class="container-fluid text-center">
-		<h1>AWA<sup>2</sup>P</h1>	
-		<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
-	</div>
+	<?php
+		}elseif ($usuario == 'profesor') {
+			require "../vistas/vistasFijas/navegadorHorizontal.view.php";
+	?>
+			<div class="container-fluid text-center">
+				<h1>AWA<sup>2</sup>P</h1>	
+				<p>Aplicaci&oacute;n Web para Apoyar el Aprendizaje de Programaci&oacute;n</p>
+			</div>
+	<?php
+		}
+	?>
 	<div class="container-fluid ">
 		<div class="panel">
 			
 			<h2>Nuevo Reto</h2>
-			<article class="row">
+			<article class="crear">
 				<form  name="formulario" class = "form-horizontal" method="POST" enctype="multipart/form-data" action="">
 
 

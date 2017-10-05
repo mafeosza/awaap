@@ -21,10 +21,53 @@
 		/**
 		*Constructor de la clase Tema
 		*/
-		public function TemaModelo(){
+		public function TemaModelo()
+		{
 			$id = "";
 			$nombre = "";
 		}
+
+		/**
+		*Método que crea un tema
+		*/
+		public function crearTema($nombre, $idUnidad)
+		{
+			$sql = "INSERT INTO `Tema` (`nombre`, `Unidad_id`) VALUES ('$nombre', '$idUnidad')";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que edita un tema
+		*/
+		public function editarTema($nombre, $id, $idUnidad)
+		{
+			$sql = "UPDATE `Tema` SET `nombre` = '$nombre' WHERE `Tema`.`id` = $id AND `Tema`.`Unidad_id` = $idUnidad;";
+			$consulta = $this->query($sql);
+		}
+
+		/**
+		*Método que elimina un tema
+		*/
+		public function eliminarTema($idTema)
+		{
+			$sql = "DELETE FROM `Tema` WHERE `Tema`.`id` = $idTema";
+			$consulta = $this->query($sql);
+		}
+
+		/*
+		*Método que da la informacion de un tema
+		*/
+		public function informacionTema($idTema)
+		{
+			$sql = "SELECT * FROM `Tema` WHERE id = $idTema";
+			$consulta = $this->query($sql);
+
+			$datos = array();
+			$datos = $consulta->fetch();
+
+			return $datos;
+		}
+
 		/**
 		*Método que retorna el nombre del tema
 		*/
